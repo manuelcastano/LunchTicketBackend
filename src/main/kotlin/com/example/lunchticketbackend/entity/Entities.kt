@@ -43,10 +43,8 @@ class Lunch(
     var lunchId: Long? = null,
     var lunchDate: Date = Date(),
     @ManyToOne
-    @JsonIgnore
-    var lunchRestaurant: Restaurant? = null,
+    var lunchRestaurant: Lunch? = null,
     @ManyToOne
-    @JsonIgnore
     var lunchStudent: Student? = null
 )
 
@@ -72,6 +70,5 @@ class Post(
     var postTitle: String = "",
     var postDate: Date? = null,
     @ManyToOne
-    @JsonIgnore
     var financialOffice: FinancialOffice? = null,
 )
