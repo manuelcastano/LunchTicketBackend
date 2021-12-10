@@ -1,35 +1,102 @@
 package com.example.lunchticketbackend.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+
 import java.util.*
 import javax.persistence.*
 
 @Entity
-@NamedQuery(name = "Student.findAll", query = "SELECT s from Student s")
-class Student(
+@Table(name = "PERSON")
+@NamedQuery(name = "Person.findAll", query = "SELECT p from Person p")
+class Person(
+
     @Id
-    @SequenceGenerator(name="STUDENT_STUDID_GENERATOR", sequenceName="STUDENT_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "STUDENT_STUDID_GENERATOR")
-    @Column(name="STUD_ID")
-    var studId: Long? = null,
-    @Column(name="STUD_CODE")
-    var studCode: String = "",
-    @Column(name="STUD_NAME")
-    var studName: String = "",
-    @Column(name="STUD_PSSWD")
-    var studPsswd: String = "",
-    @Column(name="STUD_PROFPIC")
-    var studProfPic: String = "",
-    @Column(name="STUD_STATE")
-    var studState: String = "",
-    @OneToMany(mappedBy = "lunchStudent")
+    @SequenceGenerator(name="PERSON_PERSID_GENERATOR", sequenceName="PERSON_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "PERSON_PERSID_GENERATOR")
+    @Column(name = "PERS_ID")
+    var persId : Long? = null,
+    @Column(name="PERS_NAME")
+    var persName: String = "",
+    @Column(name="PERS_CODE")
+    var persCode: String = "",
+    @Column(name = "PERS_DOCUMENT")
+    var persDoc: String = "",
+    @Column(name="PERS_STATE")
+    var persState: String = "",
+    @Column(name="PERS_PROFPIC")
+    var persProfPic: String = "",
+
+
+    @OneToMany(mappedBy = "lunchPerson")
     @JsonIgnore
-    var studentLunches: List<Lunch>? = null,
+    var personLunches: List<Lunch>? = null,
+    @OneToMany(mappedBy = "postPerson")
+    @JsonIgnore
+    var personPosts: List<Post>? = null,
+    @OneToOne(mappedBy = "userPerson")
+    var personUser: Userr? = null,
+    @OneToMany(mappedBy = "person")
+    @JsonIgnore
+    var personRoles: List<PersonRole>? = null,
 )
 
 @Entity
+@Table(name = "ROLEE")
+@NamedQuery(name = "Rolee.findAll", query = "SELECT r from Rolee r")
+class Rolee(
+
+    @Id
+    @SequenceGenerator(name="ROLEE_ROLEID_GENERATOR", sequenceName="ROLEE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "ROLEE_ROLEID_GENERATOR")
+    @Column(name = "ROLE_ID")
+    var roleId : Long? = null,
+    @Column(name = "ROLE_NAME")
+    var roleName : String = "",
+    @Column(name = "ROLE_DESCRIPTION")
+    var roleDescription : String = "",
+
+    @OneToMany(mappedBy = "role")
+    @JsonIgnore
+    var roleeRoles: List<PersonRole>? = null,
+)
+
+@Entity
+@Table(name = "PERS_ROLE")
+@NamedQuery(name = "PersonRole.findAll", query = "SELECT p from PersonRole p")
+class PersonRole(
+
+    @ManyToOne
+    @JoinColumn(name = "PERSON_PERS_ID")
+    var person: Person? = null,
+    @ManyToOne
+    @JoinColumn(name = "ROLEE_ROLE_ID")
+    var role: Rolee? = null,
+)
+
+@Entity
+@Table(name = "USERR")
+@NamedQuery(name = "Userr.findAll", query = "SELECT u from Userr u")
+class Userr(
+
+    @Id
+    @SequenceGenerator(name="USERR_USERID_GENERATOR", sequenceName="USERR_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "USERR_USERID_GENERATOR")
+    @Column(name = "USER_ID")
+    var userId : Long? = null,
+    @Column(name = "USER_NAME")
+    var userName : String = "",
+    @Column(name = "USER_PSSWD")
+    var userPsswd : String = "",
+
+    @OneToOne(mappedBy = "personUser")
+    var userPerson : Person? = null,
+)
+
+@Entity
+@Table(name = "RESTAURANT")
 @NamedQuery(name = "Restaurant.findAll", query = "SELECT r from Restaurant r")
 class Restaurant(
+
     @Id
     @SequenceGenerator(name="RESTAURANT_RESTID_GENERATOR", sequenceName="RESTAURANT_SEQ", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "RESTAURANT_RESTID_GENERATOR")
@@ -51,14 +118,17 @@ class Restaurant(
     var restLat: Long? = null,
     @Column(name = "REST_LONG")
     var restLong: Long? = null,
+
     @OneToMany(mappedBy = "lunchRestaurant")
     @JsonIgnore
     var restuarantLunches: List<Lunch>? = null,
 )
 
 @Entity
+@Table(name = "LUNCH")
 @NamedQuery(name = "Lunch.findAll", query = "SELECT l from Lunch l")
 class Lunch(
+
     @Id
     @SequenceGenerator(name="LUNCH_LUNID_GENERATOR", sequenceName="LUNCH_SEQ", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "LUNCH_LUNID_GENERATOR")
@@ -66,38 +136,20 @@ class Lunch(
     var lunchId: Long? = null,
     @Column(name = "LUN_DATE")
     var lunchDate: Date = Date(),
+
     @ManyToOne
     @JoinColumn(name = "RESTAURANT_REST_ID")
     var lunchRestaurant: Lunch? = null,
     @ManyToOne
-    @JoinColumn(name = "STUDENT_STUD_ID")
-    var lunchStudent: Student? = null
+    @JoinColumn(name = "PERSON_PERS_ID")
+    var lunchPerson: Person? = null
 )
 
 @Entity
-@NamedQuery(name = "FinancialOffice.findAll", query = "SELECT f from FinancialOffice f")
-class FinancialOffice(
-    @Id
-    @SequenceGenerator(name="FINANCIALOFFICE_FINOFFID_GENERATOR", sequenceName="FINANCIALOFFICE_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "FINANCIALOFFICE_FINOFFID_GENERATOR")
-    @Column(name = "FINOFF_ID")
-    var finOffId: Long? = null,
-    @Column(name = "FINOFF_CODE")
-    var findOffCode: String = "",
-    @Column(name = "FINOFF_DOCUMENT")
-    var finOffDoc: String = "",
-    @Column(name = "FINOFF_NAME")
-    var finOffName: String = "",
-    @Column(name = "FINOFF_PSSWD")
-    var finOffPsswd: String = "",
-    @OneToMany(mappedBy = "")
-    @JsonIgnore
-    var finOffposts: List<Post>? = null,
-)
-
-@Entity
+@Table(name = "POST")
 @NamedQuery(name = "Post.findAll", query = "SELECT p from Post p")
 class Post(
+
     @Id
     @SequenceGenerator(name="POST_PSTID_GENERATOR", sequenceName="POST_SEQ", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "POST_PSTID_GENERATOR")
@@ -109,7 +161,8 @@ class Post(
     var postDescription: String = "",
     @Column(name = "PST_DATE")
     var postDate: Date? = null,
+
     @ManyToOne
-    @JoinColumn(name = "FINANCIALOFFICE_FINOFF_ID")
-    var financialOffice: FinancialOffice? = null,
+    @JoinColumn(name = "PERSON_PERS_ID")
+    var postPerson: Person? = null,
 )
