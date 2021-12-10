@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RoleeRepo : CrudRepository<Rolee, Long> {
-
-    fun findRoleByRoleId(roleId: Long): Rolee
 }

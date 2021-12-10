@@ -7,6 +7,4 @@ import javax.persistence.NamedQuery
 
 @Repository
 interface RestaurantRepo : CrudRepository<Restaurant, Long> {
-
-    fun findRestByRestId(restID: Long): Restaurant
 }

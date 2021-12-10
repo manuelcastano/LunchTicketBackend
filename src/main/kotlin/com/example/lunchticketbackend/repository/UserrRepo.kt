@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserrRepo : CrudRepository<Userr, Long> {
-
-    fun findUserByUserId(userId: Long): Userr
 }

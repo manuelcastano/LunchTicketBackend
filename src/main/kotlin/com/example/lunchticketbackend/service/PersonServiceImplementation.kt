@@ -16,6 +16,6 @@ class PersonServiceImplementation(val persRepo: PersonRepo) : PersonServiceInter
     }
 
     override fun findPersByCode(personCode:String): Person {
-        return persRepo.findStudByCode(personCode)
+        return persRepo.findPersonByCode(personCode)
     }
 }

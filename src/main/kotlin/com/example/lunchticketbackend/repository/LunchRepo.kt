@@ -7,6 +7,4 @@ import javax.persistence.NamedQuery
 
 @Repository
 interface LunchRepo : CrudRepository<Lunch, Long> {
-
-    fun findLunchByLunchId(lunchId: Long): Lunch
 }
