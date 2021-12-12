@@ -1,6 +1,7 @@
 package com.example.lunchticketbackend.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import java.io.Serializable
 
 import java.util.*
 import javax.persistence.*
@@ -33,7 +34,7 @@ class Person(
     @OneToMany(mappedBy = "postPerson")
     @JsonIgnore
     var personPosts: List<Post>? = null,
-    @OneToOne(mappedBy = "userPerson")
+    @OneToOne
     var personUser: Userr? = null,
     @OneToMany(mappedBy = "person")
     @JsonIgnore
@@ -65,13 +66,24 @@ class Rolee(
 @NamedQuery(name = "PersonRole.findAll", query = "SELECT p from PersonRole p")
 class PersonRole(
 
+    @EmbeddedId
+    var id: PersonRolePK? = null,
+
     @ManyToOne
-    @JoinColumn(name = "PERSON_PERS_ID")
+    @JoinColumn(name = "PERSON_PERS_ID", insertable = false, updatable = false)
     var person: Person? = null,
     @ManyToOne
-    @JoinColumn(name = "ROLEE_ROLE_ID")
+    @JoinColumn(name = "ROLEE_ROLE_ID", insertable = false, updatable = false)
     var role: Rolee? = null,
-)
+) : Serializable
+
+@Embeddable
+class PersonRolePK(
+    @Column(name="PERSON_PERS_ID", insertable = false, updatable = false)
+    var personPersonId: Long? = null,
+    @Column(name = "ROLEE_ROLE_ID", insertable = false, updatable = false)
+    var roleRoleId: Long? = null,
+) : Serializable
 
 @Entity
 @Table(name = "USERR")
@@ -90,6 +102,9 @@ class Userr(
 
     @OneToOne(mappedBy = "personUser")
     var userPerson : Person? = null,
+
+    @OneToOne(mappedBy = "restaurantUser")
+    var userRestaurant : Restaurant? = null,
 )
 
 @Entity
@@ -121,7 +136,10 @@ class Restaurant(
 
     @OneToMany(mappedBy = "lunchRestaurant")
     @JsonIgnore
-    var restuarantLunches: List<Lunch>? = null,
+    var restaurantLunches: List<Lunch>? = null,
+
+    @OneToOne(mappedBy = "")
+    var restaurantUser: Userr? = null
 )
 
 @Entity
