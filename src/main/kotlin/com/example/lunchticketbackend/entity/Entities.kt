@@ -12,8 +12,7 @@ import javax.persistence.*
 class Person(
 
     @Id
-    @SequenceGenerator(name="PERSON_PERSID_GENERATOR", sequenceName="PERSON_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "PERSON_PERSID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "PERS_ID")
     var persId : Long? = null,
     @Column(name="PERS_NAME")
@@ -45,8 +44,7 @@ class Person(
 class Rolee(
 
     @Id
-    @SequenceGenerator(name="ROLEE_ROLEID_GENERATOR", sequenceName="ROLEE_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "ROLEE_ROLEID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ROLE_ID")
     var roleId : Long? = null,
     @Column(name = "ROLE_NAME")
@@ -90,8 +88,7 @@ class PersonRolePK(
 class Userr(
 
     @Id
-    @SequenceGenerator(name="USERR_USERID_GENERATOR", sequenceName="USERR_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "USERR_USERID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "USER_ID")
     var userId : Long? = null,
     @Column(name = "USER_NAME")
@@ -114,8 +111,7 @@ class Userr(
 class Restaurant(
 
     @Id
-    @SequenceGenerator(name="RESTAURANT_RESTID_GENERATOR", sequenceName="RESTAURANT_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "RESTAURANT_RESTID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "REST_ID")
     var restID: Long? = null,
     @Column(name = "REST_NIT")
@@ -146,16 +142,15 @@ class Restaurant(
 class Lunch(
 
     @Id
-    @SequenceGenerator(name="LUNCH_LUNID_GENERATOR", sequenceName="LUNCH_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "LUNCH_LUNID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "LUN_ID")
-    var lunchId: Long? = null,
+    var lunchId: Int = 0,
     @Column(name = "LUN_DATE")
     var lunchDate: Date = Date(),
 
     @ManyToOne
     @JoinColumn(name = "RESTAURANT_REST_ID")
-    var lunchRestaurant: Lunch? = null,
+    var lunchRestaurant: Restaurant? = null,
     @ManyToOne
     @JoinColumn(name = "PERSON_PERS_ID")
     var lunchPerson: Person? = null
@@ -167,8 +162,7 @@ class Lunch(
 class Post(
 
     @Id
-    @SequenceGenerator(name="POST_PSTID_GENERATOR", sequenceName="POST_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "POST_PSTID_GENERATOR")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "PST_ID")
     var postId: Long? = null,
     @Column(name = "PST_TITLE")
