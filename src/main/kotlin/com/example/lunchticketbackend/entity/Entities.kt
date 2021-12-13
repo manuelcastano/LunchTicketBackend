@@ -31,15 +31,13 @@ class Person(
     @OneToMany(mappedBy = "lunchPerson")
     @JsonIgnore
     var personLunches: List<Lunch>? = null,
-    @OneToMany(mappedBy = "postPerson")
-    @JsonIgnore
-    var personPosts: List<Post>? = null,
     @OneToOne
-    var personUser: Userr? = null,
+    @JoinColumn(name = "USERR_USER_ID")
+    var userr: Userr? = null,
     @OneToMany(mappedBy = "person")
     @JsonIgnore
     var personRoles: List<PersonRole>? = null,
-)
+) : Serializable
 
 @Entity
 @Table(name = "ROLEE")
@@ -59,7 +57,7 @@ class Rolee(
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     var roleeRoles: List<PersonRole>? = null,
-)
+) : Serializable
 
 @Entity
 @Table(name = "PERS_ROLE")
@@ -79,6 +77,7 @@ class PersonRole(
 
 @Embeddable
 class PersonRolePK(
+
     @Column(name="PERSON_PERS_ID", insertable = false, updatable = false)
     var personPersonId: Long? = null,
     @Column(name = "ROLEE_ROLE_ID", insertable = false, updatable = false)
@@ -100,12 +99,14 @@ class Userr(
     @Column(name = "USER_PSSWD")
     var userPsswd : String = "",
 
-    @OneToOne(mappedBy = "personUser")
-    var userPerson : Person? = null,
+    @OneToOne(mappedBy = "userr")
+    @JsonIgnore
+    var person: Person? = null,
 
-    @OneToOne(mappedBy = "restaurantUser")
-    var userRestaurant : Restaurant? = null,
-)
+    @OneToOne(mappedBy = "userres")
+    @JsonIgnore
+    var restaurant: Restaurant? = null,
+) : Serializable
 
 @Entity
 @Table(name = "RESTAURANT")
@@ -121,10 +122,6 @@ class Restaurant(
     var restNIT: String = "",
     @Column(name = "REST_NAME")
     var restName: String = "",
-    @Column(name = "REST_USERNAME")
-    var restUserName: String = "",
-    @Column(name = "REST_PSSWD")
-    var restPsswd: String = "",
     @Column(name = "REST_PROFPIC")
     var restProfPic: String = "",
     @Column(name = "REST_SOCIALREASON")
@@ -138,9 +135,10 @@ class Restaurant(
     @JsonIgnore
     var restaurantLunches: List<Lunch>? = null,
 
-    @OneToOne(mappedBy = "")
-    var restaurantUser: Userr? = null
-)
+    @OneToOne
+    @JoinColumn(name = "USERR_USER_ID")
+    var userres: Userr? = null,
+) : Serializable
 
 @Entity
 @Table(name = "LUNCH")
@@ -161,7 +159,7 @@ class Lunch(
     @ManyToOne
     @JoinColumn(name = "PERSON_PERS_ID")
     var lunchPerson: Person? = null
-)
+) : Serializable
 
 @Entity
 @Table(name = "POST")
@@ -180,7 +178,4 @@ class Post(
     @Column(name = "PST_DATE")
     var postDate: Date? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "PERSON_PERS_ID")
-    var postPerson: Person? = null,
-)
+) : Serializable
