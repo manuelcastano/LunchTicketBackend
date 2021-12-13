@@ -10,6 +10,10 @@ class UserrServiceImplementation(val userRepo: UserrRepo):UserrServiceInterface 
         return userRepo.findAll() as List<Userr>
     }
 
+    fun findAllByUsername(username: String): List<Userr> {
+        return userRepo.findAllByUserName(username)
+    }
+
     override fun validateUser(username: String, password: String): Boolean {
         val user = userRepo.findAllByUserName(username)
         if (user.isNotEmpty()) {

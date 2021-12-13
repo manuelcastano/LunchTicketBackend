@@ -1,6 +1,7 @@
 package com.example.lunchticketbackend.controller
 
 import com.example.lunchticketbackend.service.LunchServiceImplementation
+import com.example.lunchticketbackend.service.PersonServiceImplementation
 import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -16,7 +17,7 @@ import javax.crypto.spec.SecretKeySpec
 
 
 @RestController
-class QRCodeController(val lunchService: LunchServiceImplementation) {
+class QRCodeController(val lunchService: LunchServiceImplementation, val personService : PersonServiceImplementation) {
 
     @Value("\${lunchticket.waittimeseconds}")
     private val waitTimeSeconds: Long = 1
@@ -40,15 +41,16 @@ class QRCodeController(val lunchService: LunchServiceImplementation) {
     }
 
     @PostMapping("/qrcode")
-    fun readQR(@RequestBody qr: String, @RequestParam("rest") restaurant: String): String {
+    fun readQR(@RequestParam("qr") qr: String, @RequestParam("rest") restaurant: String): String {
         try {
             val decrypted = decryptAES(qr)
             val gson = Gson()
             val wrapper = gson.fromJson(decrypted, QRCodeWrapper::class.java)
             val studentCode = wrapper.studentCode
             val timestamp = wrapper.timestamp
+//            val stud = personService.findPersByCode(studentCode)
             lunchService.create(studentCode, restaurant, timestamp)
-            return decrypted
+            return studentCode
         } catch (e: Exception) {
             e.printStackTrace()
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -65,7 +67,7 @@ class QRCodeController(val lunchService: LunchServiceImplementation) {
         val cipher: Cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.ENCRYPT_MODE, secret)
         val encrypted = cipher.doFinal(text.toByteArray())
-        return Base64.getEncoder().encodeToString(encrypted)
+        return encrypted.toHex()
     }
 
     private fun decryptAES(text: String): String {
@@ -76,7 +78,15 @@ class QRCodeController(val lunchService: LunchServiceImplementation) {
         val secret: SecretKey = SecretKeySpec(tmp.encoded, "AES")
         val cipher: Cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, secret)
-        val decrypted = cipher.doFinal(Base64.getDecoder().decode(text))
+        val decrypted = cipher.doFinal(text.decodeHex())
         return String(decrypted)
+    }
+
+    fun ByteArray.toHex(): String = joinToString(separator = "") { eachByte -> "%02x".format(eachByte) }
+
+    fun String.decodeHex(): ByteArray {
+        return chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
     }
 }

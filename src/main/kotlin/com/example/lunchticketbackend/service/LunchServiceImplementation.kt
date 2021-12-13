@@ -37,7 +37,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         lunch.lunchPerson = pers
         lunch.lunchRestaurant = res
         val lowerLimit = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"))
-        lowerLimit.set(Calendar.HOUR_OF_DAY,11)
+        lowerLimit.set(Calendar.HOUR_OF_DAY,5)
         lowerLimit.set(Calendar.MINUTE, 0)
         lowerLimit.set(Calendar.SECOND, 0)
         val upperLimit = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"))
