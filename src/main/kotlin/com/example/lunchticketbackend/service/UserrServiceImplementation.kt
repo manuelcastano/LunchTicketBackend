@@ -21,4 +21,13 @@ class UserrServiceImplementation(val userRepo: UserrRepo):UserrServiceInterface 
         }
         return false
     }
+
+    override fun getAllUsers(): String {
+        var lista = ""
+        var listaRetornada = userRepo.findAll() as List<Userr>
+        for(user in listaRetornada){
+            lista += user.userName+"\n"
+        }
+        return lista
+    }
 }
