@@ -31,7 +31,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
 
         val correctTimestamp = timestamp == System.currentTimeMillis() / (1000 * waitTimeSeconds)
 
-        val pers = personRepo.findAllByPersCode(persCode) ?: throw Exception("The user doesn't exist in the database")
+        val pers = personRepo.findPersonByDocument(persCode) ?: throw Exception("The user doesn't exist in the database")
         val res = restaurantRepo.findAllByRestNIT(restNIT) ?: throw Exception("The restaurant doesn't exist")
         val lunch = Lunch()
         lunch.lunchPerson = pers

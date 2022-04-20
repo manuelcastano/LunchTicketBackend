@@ -23,23 +23,17 @@ class UserController(val userService: UserrServiceImplementation, val personRepo
     //@Autowired
     //private lateinit var userService: UserrServiceImplementation
 
-    @PostMapping("/login")
-    fun login(
-        @RequestParam("user") username: String,
-        @RequestParam("password") pwd: String
-    ): String {
-        //throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cause description here")
-        if (userService.validateUser(username, pwd)) {
-            userService
-            return getJWTToken(username)
-        } else {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cause description here")
-        }
-    }
-
     @GetMapping("/findAllUsers")
     fun findAllUsers():String{
         return userService.getAllUsers()
+    }
+
+    @PostMapping("/addUser")
+    fun findAllUsers(
+        @RequestParam("document") document: String,
+        @RequestParam("name") name: String,
+    ){
+        return userService.addUser(name, document)
     }
 
     @PostMapping("/userProfilePic")
@@ -65,7 +59,6 @@ class UserController(val userService: UserrServiceImplementation, val personRepo
         var doc = ""
 
         if(user.person != null) {
-            code = user.person!!.persCode
             name = user.person!!.persName
             pic = user.person!!.persProfPic
             doc = user.person!!.persDoc

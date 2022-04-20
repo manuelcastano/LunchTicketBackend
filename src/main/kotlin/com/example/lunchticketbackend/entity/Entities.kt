@@ -17,8 +17,6 @@ class Person(
     var persId : Long? = null,
     @Column(name="PERS_NAME")
     var persName: String = "",
-    @Column(name="PERS_CODE")
-    var persCode: String = "",
     @Column(name = "PERS_DOCUMENT")
     var persDoc: String = "",
     @Column(name="PERS_STATE")
@@ -93,8 +91,8 @@ class Userr(
     var userId : Long? = null,
     @Column(name = "USER_NAME")
     var userName : String = "",
-    @Column(name = "USER_PSSWD")
-    var userPsswd : String = "",
+    @Column(name = "USER_DOCUMENT")
+    var userDocument : String = "",
 
     @OneToOne(mappedBy = "userr")
     @JsonIgnore

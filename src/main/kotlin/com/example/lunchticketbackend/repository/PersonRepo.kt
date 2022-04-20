@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PersonRepo : CrudRepository<Person, Long> {
 
-    @Query(value="SELECT p FROM Person p WHERE p.persCode =: personCode")
-    fun findPersonByCode(personCode: String): Person
-    fun findAllByPersCode(personCode: String):Person?
+    @Query(value="SELECT p FROM Person p WHERE p.persDoc = :personCode")
+    fun findPersonByDocument(personCode: String): Person?
 }

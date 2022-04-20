@@ -15,7 +15,15 @@ class PersonServiceImplementation(val persRepo: PersonRepo) : PersonServiceInter
         return persRepo.findById(personId).get()
     }
 
-    override fun findPersByCode(personCode:String): Person {
-        return persRepo.findPersonByCode(personCode)
+    override fun findPersByCode(personCode:String): Person? {
+        return persRepo.findPersonByDocument(personCode)
+    }
+
+    override fun findPersonByDocument(document: String): Boolean {
+        var retorno = false
+        var person = persRepo.findPersonByDocument(document)
+        if(person != null)
+            retorno = true
+        return retorno
     }
 }
