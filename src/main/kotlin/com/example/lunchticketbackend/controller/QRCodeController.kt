@@ -28,8 +28,8 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val personS
     data class QRCodeWrapper(val studentCode: String, val timestamp: Long)
 
     @GetMapping("/qrcode")
-    fun getQRForUser(@RequestParam("user") username: String): String {
-        val wrapper = QRCodeWrapper(username, System.currentTimeMillis() / (1000 * waitTimeSeconds))
+    fun getQRForUser(@RequestParam("document") document: String): String {
+        val wrapper = QRCodeWrapper(document, System.currentTimeMillis() / (1000 * waitTimeSeconds))
         val gson = Gson()
         return encryptAES(gson.toJson(wrapper))
     }
@@ -55,7 +55,16 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val personS
             e.printStackTrace()
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }
+    }
 
+    @PostMapping("/qrcodeSave")
+    fun saveLunch(@RequestParam("studentCode") studentCode: String, @RequestParam("rest") restaurant: String) {
+        try {
+            lunchService.saveLunch(studentCode, restaurant)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }
     }
 
     private fun encryptAES(text: String): String {
