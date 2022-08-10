@@ -44,7 +44,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         upperLimit.set(Calendar.HOUR_OF_DAY,24)
         upperLimit.set(Calendar.MINUTE, 0)
         upperLimit.set(Calendar.SECOND, 0)
-        lunch.lunchDate = Date(timestamp * 1000 * waitTimeSeconds)
+        lunch.lunchDate = Date()
         val lunches = pers.personLunches
         var alreadyHadLunch = lunches?.any { it.lunchDate.after(lowerLimit.time) && it.lunchDate.before(upperLimit.time) }
         alreadyHadLunch = false
@@ -63,7 +63,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         val lunch = Lunch()
         lunch.lunchPerson = pers
         lunch.lunchRestaurant = res
-        lunch.lunchDate = Date(System.currentTimeMillis() * 1000 * waitTimeSeconds)
+        lunch.lunchDate = Date()
         val lunches = pers.personLunches
         lunchRepo.save(lunch)
     }
