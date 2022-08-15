@@ -1,138 +1,30 @@
 package com.example.lunchticketbackend.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.io.Serializable
 
 import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "PERSON")
-@NamedQuery(name = "Person.findAll", query = "SELECT p from Person p")
-class Person(
+@Table(name = "EMPLOYEE_R")
+@NamedQuery(name = "Employee_R.findAll", query = "SELECT e from Employee_R e")
+class Employee_R(
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "PERS_ID")
-    var persId : Long? = null,
-    @Column(name="PERS_NAME")
-    var persName: String = "",
-    @Column(name = "PERS_DOCUMENT")
-    var persDoc: String = "",
-    @Column(name="PERS_STATE")
-    var persState: String = "",
-    @Column(name="PERS_PROFPIC")
-    var persProfPic: String = "",
-
-
-    @OneToMany(mappedBy = "lunchPerson")
-    @JsonIgnore
-    var personLunches: List<Lunch>? = null,
-    @OneToOne
-    @JoinColumn(name = "USERR_USER_ID")
-    var userr: Userr? = null,
-    @OneToMany(mappedBy = "person")
-    @JsonIgnore
-    var personRoles: List<PersonRole>? = null,
-) : Serializable
-
-@Entity
-@Table(name = "ROLEE")
-@NamedQuery(name = "Rolee.findAll", query = "SELECT r from Rolee r")
-class Rolee(
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "ROLE_ID")
-    var roleId : Long? = null,
-    @Column(name = "ROLE_NAME")
-    var roleName : String = "",
-    @Column(name = "ROLE_DESCRIPTION")
-    var roleDescription : String = "",
-
-    @OneToMany(mappedBy = "role")
-    @JsonIgnore
-    var roleeRoles: List<PersonRole>? = null,
-) : Serializable
-
-@Entity
-@Table(name = "PERS_ROLE")
-@NamedQuery(name = "PersonRole.findAll", query = "SELECT p from PersonRole p")
-class PersonRole(
-
-    @EmbeddedId
-    var id: PersonRolePK? = null,
-
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "NAME")
+    var name: String = "",
+    @Column(name = "LAST_NAME")
+    var last_name: String = "",
+    @Column(name = "DOCUMENT")
+    var document: String = "",
     @ManyToOne
-    @JoinColumn(name = "PERSON_PERS_ID", insertable = false, updatable = false)
-    var person: Person? = null,
-    @ManyToOne
-    @JoinColumn(name = "ROLEE_ROLE_ID", insertable = false, updatable = false)
-    var role: Rolee? = null,
-) : Serializable
+    @JoinColumn(name = "USER_ID")
+    var userID: Userr? = null,
 
-@Embeddable
-class PersonRolePK(
-
-    @Column(name="PERSON_PERS_ID", insertable = false, updatable = false)
-    var personPersonId: Long? = null,
-    @Column(name = "ROLEE_ROLE_ID", insertable = false, updatable = false)
-    var roleRoleId: Long? = null,
-) : Serializable
-
-@Entity
-@Table(name = "USERR")
-@NamedQuery(name = "Userr.findAll", query = "SELECT u from Userr u")
-class Userr(
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "USER_ID")
-    var userId : Long? = null,
-    @Column(name = "USER_NAME")
-    var userName : String = "",
-    @Column(name = "USER_DOCUMENT")
-    var userDocument : String = "",
-
-    @OneToOne(mappedBy = "userr")
-    @JsonIgnore
-    var person: Person? = null,
-
-    @OneToOne(mappedBy = "userres")
-    @JsonIgnore
-    var restaurant: Restaurant? = null,
-) : Serializable
-
-@Entity
-@Table(name = "RESTAURANT")
-@NamedQuery(name = "Restaurant.findAll", query = "SELECT r from Restaurant r")
-class Restaurant(
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "REST_ID")
-    var restID: Long? = null,
-    @Column(name = "REST_NIT")
-    var restNIT: String = "",
-    @Column(name = "REST_NAME")
-    var restName: String = "",
-    @Column(name = "REST_PROFPIC")
-    var restProfPic: String = "",
-    @Column(name = "REST_SOCIALREASON")
-    var restSocialReason: String = "",
-    @Column(name = "REST_LAT")
-    var restLat: Long? = null,
-    @Column(name = "REST_LONG")
-    var restLong: Long? = null,
-
-    @OneToMany(mappedBy = "lunchRestaurant")
-    @JsonIgnore
-    var restaurantLunches: List<Lunch>? = null,
-
-    @OneToOne
-    @JoinColumn(name = "USERR_USER_ID")
-    var userres: Userr? = null,
-) : Serializable
+): Serializable
 
 @Entity
 @Table(name = "LUNCH")
@@ -141,33 +33,163 @@ class Lunch(
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "LUN_ID")
-    var lunchId: Int = 0,
-    @Column(name = "LUN_DATE")
-    var lunchDate: Date = Date(),
-
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "DATE_LUNCH")
+    var dateLunch: String = "",
+    @Column(name = "ACCEPTED")
+    var accepted: String = "",
     @ManyToOne
-    @JoinColumn(name = "RESTAURANT_REST_ID")
-    var lunchRestaurant: Restaurant? = null,
+    @JoinColumn(name = "STUDENT_ID")
+    var studentID: Student? = null,
     @ManyToOne
-    @JoinColumn(name = "PERSON_PERS_ID")
-    var lunchPerson: Person? = null
-) : Serializable
+    @JoinColumn(name = "RESTAURANT_ID")
+    var restaurantID: Restaurant? = null,
+): Serializable
 
 @Entity
-@Table(name = "POST")
-@NamedQuery(name = "Post.findAll", query = "SELECT p from Post p")
-class Post(
+@Table(name = "MEMBER_AF")
+@NamedQuery(name = "Member_AF.findAll", query = "SELECT m from Member_AF m")
+class Member_AF(
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "PST_ID")
-    var postId: Long? = null,
-    @Column(name = "PST_TITLE")
-    var postTitle: String = "",
-    @Column(name = "PST_DESCRIPTION")
-    var postDescription: String = "",
-    @Column(name = "PST_DATE")
-    var postDate: Date? = null,
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "NAME")
+    var name: String = "",
+    @Column(name = "LAST_NAME")
+    var last_name: String = "",
+    @Column(name = "IS_SUPER_ADMIN")
+    var is_super_admin: String = "",
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    var userID: Userr? = null,
+): Serializable
 
-) : Serializable
+@Entity
+@Table(name = "POSTS")
+@NamedQuery(name = "Posts.findAll", query = "SELECT p from Posts p")
+class Posts(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "TITLE")
+    var title: String = "",
+    @Column(name = "BODY")
+    var body: String = "",
+    @Column(name = "DATE_POST")
+    var date_post: String = "",
+): Serializable
+
+@Entity
+@Table(name = "RESTAURANT")
+@NamedQuery(name = "Restaurant.findAll", query = "SELECT r from Restaurant r")
+class Restaurant(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "NAME")
+    var name: String = "",
+    @Column(name = "NIT")
+    var nit: String = "",
+    @Column(name = "PROFILE_PIC_URL")
+    var profile_pic_url: String = "",
+): Serializable
+
+@Entity
+@Table(name = "SCHOLARSHIP_NAME")
+@NamedQuery(name = "Scholarship_name.findAll", query = "SELECT s from Scholarship_name s")
+class Scholarship_name(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "NAME")
+    var name: String = "",
+): Serializable
+
+@Entity
+@Table(name = "SCHOLARSHIP_REGISTRY")
+@NamedQuery(name = "Scholarship_registry.findAll", query = "SELECT s from Scholarship_registry s")
+class Scholarship_registry(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "START_DATE")
+    var start_date: String = "",
+    @Column(name = "END_DATE")
+    var end_date: String = "",
+    @Column(name = "ACTIVE")
+    var active: String = "",
+    @ManyToOne
+    @JoinColumn(name = "SCHOLARSHIP_NAME")
+    var scholarshipName: Scholarship_name? = null,
+    @ManyToOne
+    @JoinColumn(name = "STUDENT_ID")
+    var studentID: Student? = null,
+): Serializable
+
+@Entity
+@Table(name = "STUDENT")
+@NamedQuery(name = "Student.findAll", query = "SELECT s from Student s")
+class Student(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "DOCUMENT")
+    var document: String = "",
+    @Column(name = "CODE")
+    var code: String = "",
+    @Column(name = "NAME")
+    var name: String = "",
+    @Column(name = "LAST_NAME")
+    var lastName: String = "",
+    @Column(name = "PROFILE_PIC_URL")
+    var profile_pic_url: String = "",
+    @Column(name = "ACTIVE")
+    var active: String = "",
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    var userID: Userr? = null,
+): Serializable
+
+@Entity
+@Table(name = "USER_TYPE")
+@NamedQuery(name = "User_type.findAll", query = "SELECT u from User_type u")
+class User_type(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "ROLE")
+    var role: String = "",
+): Serializable
+
+@Entity
+@Table(name = "USERR")
+@NamedQuery(name = "Userr.findAll", query = "SELECT u from Userr u")
+class Userr(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    var id: Int? = null,
+    @Column(name = "DOCUMENT")
+    var document: String = "",
+    @Column(name = "PASSWORD")
+    var password: String = "",
+    @ManyToOne
+    @JoinColumn(name = "USER_TYPE")
+    var userType: User_type? = null,
+): Serializable
