@@ -1,10 +1,10 @@
 package com.example.lunchticketbackend.repository
 
-import com.example.lunchticketbackend.entity.Rolee
+import com.example.lunchticketbackend.entity.Member_AF
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
-
 @Repository
-interface RoleeRepo : CrudRepository<Rolee, Long> {
+interface MemberAFRepo : CrudRepository<Member_AF, Long> {
+
 }

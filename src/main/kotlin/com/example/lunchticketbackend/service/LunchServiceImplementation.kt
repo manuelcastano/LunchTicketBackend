@@ -1,10 +1,7 @@
 package com.example.lunchticketbackend.service
 
 import com.example.lunchticketbackend.entity.Lunch
-import com.example.lunchticketbackend.entity.Person
-import com.example.lunchticketbackend.entity.Restaurant
 import com.example.lunchticketbackend.repository.LunchRepo
-import com.example.lunchticketbackend.repository.PersonRepo
 import com.example.lunchticketbackend.repository.RestaurantRepo
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -12,7 +9,6 @@ import java.util.*
 
 @Service
 class LunchServiceImplementation(val lunchRepo: LunchRepo,
-                                 val personRepo: PersonRepo,
                                  val restaurantRepo: RestaurantRepo
 ):LunchServiceInterface {
 
@@ -28,7 +24,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
     }
 
     override fun create(persCode : String, restNIT: String, timestamp: Long) {
-
+        /*
         val correctTimestamp = timestamp == System.currentTimeMillis() / (1000 * waitTimeSeconds)
 
         val pers = personRepo.findPersonByDocument(persCode) ?: throw Exception("The user doesn't exist in the database")
@@ -55,9 +51,12 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         if (alreadyHadLunch!! || !inTime || !correctTimestamp) {
             throw Exception()
         }
+
+         */
     }
 
     override fun saveLunch(persCode : String, restNIT: String) {
+        /*
         val pers = personRepo.findPersonByDocument(persCode) ?: throw Exception("The user doesn't exist in the database")
         val res = restaurantRepo.findAllByRestNIT(restNIT) ?: throw Exception("The restaurant doesn't exist")
         val lunch = Lunch()
@@ -66,5 +65,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         lunch.lunchDate = Date()
         val lunches = pers.personLunches
         lunchRepo.save(lunch)
+
+         */
     }
 }

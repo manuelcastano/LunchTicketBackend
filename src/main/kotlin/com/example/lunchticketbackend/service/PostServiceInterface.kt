@@ -1,8 +1,9 @@
 package com.example.lunchticketbackend.service
 
-import com.example.lunchticketbackend.entity.Post
+import com.example.lunchticketbackend.entity.Posts
 
 interface PostServiceInterface {
-    fun findAll():List<Post>
-    fun findPostById(postId:Long):Post
+    fun findAll():List<Posts>
+    fun findPostById(postId:Long):Posts
+    abstract fun addPost(title: String, body: String, datePost: String)
 }

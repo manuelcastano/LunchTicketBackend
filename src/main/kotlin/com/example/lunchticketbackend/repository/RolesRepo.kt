@@ -1,5 +1,6 @@
 package com.example.lunchticketbackend.repository
 
+import com.example.lunchticketbackend.entity.Roles
 import com.example.lunchticketbackend.entity.Userr
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-interface UserrRepo : CrudRepository<Userr, Long> {
+interface RolesRepo : CrudRepository<Roles, Long> {
 
-    @Query("SELECT u FROM Userr u where u.username = :username")
-    fun findUserByUsername(@Param("username") username: String): Userr?
+    @Query("SELECT r.userTypeID.id FROM Roles r where r.userID = :userID")
+    fun findRoleById(@Param("userID") userID: Userr): List<Int>
 }

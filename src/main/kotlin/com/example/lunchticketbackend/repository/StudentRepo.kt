@@ -1,9 +1,10 @@
 package com.example.lunchticketbackend.repository
 
-import com.example.lunchticketbackend.entity.Posts
+import com.example.lunchticketbackend.entity.Student
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface PostRepo : CrudRepository<Posts, Long> {
+interface StudentRepo : CrudRepository<Student, Long> {
+
 }

@@ -8,6 +8,4 @@ import javax.persistence.NamedQuery
 @Repository
 interface RestaurantRepo : CrudRepository<Restaurant, Long> {
 
-    fun findAllByRestNIT(restNIT:String):Restaurant?
-
 }

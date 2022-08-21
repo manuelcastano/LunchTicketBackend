@@ -1,7 +1,6 @@
 package com.example.lunchticketbackend.controller
 
 import com.example.lunchticketbackend.service.LunchServiceImplementation
-import com.example.lunchticketbackend.service.PersonServiceImplementation
 import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -17,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec
 
 
 @RestController
-class QRCodeController(val lunchService: LunchServiceImplementation, val personService : PersonServiceImplementation) {
+class QRCodeController(val lunchService: LunchServiceImplementation) {
 
     @Value("\${lunchticket.waittimeseconds}")
     private val waitTimeSeconds: Long = 1

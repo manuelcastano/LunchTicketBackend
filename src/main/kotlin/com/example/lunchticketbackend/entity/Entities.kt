@@ -1,8 +1,6 @@
 package com.example.lunchticketbackend.entity
 
 import java.io.Serializable
-
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -14,12 +12,6 @@ class Employee_R(
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
     var id: Int? = null,
-    @Column(name = "NAME")
-    var name: String = "",
-    @Column(name = "LAST_NAME")
-    var last_name: String = "",
-    @Column(name = "DOCUMENT")
-    var document: String = "",
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     var userID: Userr? = null,
@@ -56,10 +48,6 @@ class Member_AF(
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
     var id: Int? = null,
-    @Column(name = "NAME")
-    var name: String = "",
-    @Column(name = "LAST_NAME")
-    var last_name: String = "",
     @Column(name = "IS_SUPER_ADMIN")
     var is_super_admin: String = "",
     @ManyToOne
@@ -75,7 +63,7 @@ class Posts(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "TITLE")
     var title: String = "",
     @Column(name = "BODY")
@@ -146,14 +134,6 @@ class Student(
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
     var id: Int? = null,
-    @Column(name = "DOCUMENT")
-    var document: String = "",
-    @Column(name = "CODE")
-    var code: String = "",
-    @Column(name = "NAME")
-    var name: String = "",
-    @Column(name = "LAST_NAME")
-    var lastName: String = "",
     @Column(name = "PROFILE_PIC_URL")
     var profile_pic_url: String = "",
     @Column(name = "ACTIVE")
@@ -184,12 +164,28 @@ class Userr(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
+    var id: Int = 0,
+    @Column(name = "PERS_NAME")
+    var pers_name: String = "",
+    @Column(name = "PERS_LASTNAME")
+    var pers_lastname: String = "",
+    @Column(name = "USERNAME")
+    var username: String = "",
+): Serializable
+
+@Entity
+@Table(name = "ROLES")
+@NamedQuery(name = "Roles.findAll", query = "SELECT r from Roles r")
+class Roles(
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
     var id: Int? = null,
-    @Column(name = "DOCUMENT")
-    var document: String = "",
-    @Column(name = "PASSWORD")
-    var password: String = "",
     @ManyToOne
-    @JoinColumn(name = "USER_TYPE")
-    var userType: User_type? = null,
+    @JoinColumn(name = "USER_ID")
+    var userID: Userr? = null,
+    @ManyToOne
+    @JoinColumn(name = "USER_TYPE_ID")
+    var userTypeID: User_type? = null,
 ): Serializable
