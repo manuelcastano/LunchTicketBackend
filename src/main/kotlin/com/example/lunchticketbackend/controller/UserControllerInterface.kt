@@ -4,6 +4,6 @@ import com.example.lunchticketbackend.entity.Userr
 
 interface UserControllerInterface {
 
-    fun addUser(persName: String, lastName: String, username: String, role: Int)
+    fun login(body: String): Userr
     fun findUserByUsername(username: String): Userr?
 }
