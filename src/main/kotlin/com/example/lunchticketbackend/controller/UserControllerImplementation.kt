@@ -22,7 +22,6 @@ class UserControllerImplementation(val userService: UserrServiceInterface): User
         )
         var json = Gson()
         var user: User = json.fromJson(body, User::class.java)
-        print("This is the user: "+ user)
         return ResponseEntity.ok()
             .headers(responseHeaders)
             .body(userService.addUser(user.persName, user.lastName, user.username))

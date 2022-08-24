@@ -12,4 +12,7 @@ interface UserrRepo : CrudRepository<Userr, Long> {
 
     @Query("SELECT u FROM Userr u where u.username = :username")
     fun findUserByUsername(@Param("username") username: String): Userr?
+
+    @Query("SELECT u FROM Userr u inner join Roles r on u.id = r.userID.id where u.username = :username")
+    fun getUserAndRolesByUsername(@Param("username") username: String): Userr?
 }

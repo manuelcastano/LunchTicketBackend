@@ -22,7 +22,8 @@ class UserrServiceImplementation(val userRepo: UserrRepo, val studentRepo: Stude
     }
 
     override fun addUser(persName: String, persLastName: String, username: String): Userr {
-        var userVerification: Userr? = userRepo.findUserByUsername(username)
+        print(userRepo.getUserAndRolesByUsername(username))
+        var userVerification: Userr? = userRepo.getUserAndRolesByUsername(username)
         if (userVerification == null) {
             var userr: Userr = Userr(0, persName, persLastName, username)
             return userRepo.save(userr)
