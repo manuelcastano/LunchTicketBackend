@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RolesRepo : CrudRepository<Roles, Long> {
 
-    @Query("SELECT r.userTypeID.id FROM Roles r where r.userID = :userID")
-    fun findRoleById(@Param("userID") userID: Userr): List<Int>
+    @Query("SELECT r FROM Roles r where r.userID.id = :userID")
+    fun findRolesByUserId(@Param("userID") userID: Int): List<Roles>
 }

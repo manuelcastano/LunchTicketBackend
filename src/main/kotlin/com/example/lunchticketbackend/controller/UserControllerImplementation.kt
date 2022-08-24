@@ -1,5 +1,6 @@
 package com.example.lunchticketbackend.controller
 
+import com.example.lunchticketbackend.entity.Roles
 import com.example.lunchticketbackend.entity.Userr
 import com.example.lunchticketbackend.model.User
 import com.example.lunchticketbackend.service.UserrServiceInterface
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin
 class UserControllerImplementation(val userService: UserrServiceInterface): UserControllerInterface {
 
-    @PostMapping("/addUser")
-    override fun login(@RequestBody body: String):Userr {
+    @PostMapping("/login")
+    override fun login(@RequestBody body: String): List<Roles> {
         var json = Gson()
         var user: User = json.fromJson(body, User::class.java)
-        return userService.addUser(user.persName, user.persLastname, user.persIddocument)
+        return userService.login(user.persName, user.persLastname, user.persIddocument)
     }
 
     @GetMapping("/getUserByUsername")
