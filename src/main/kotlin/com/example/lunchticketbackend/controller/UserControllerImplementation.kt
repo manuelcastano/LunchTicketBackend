@@ -14,17 +14,10 @@ import org.springframework.web.bind.annotation.*
 class UserControllerImplementation(val userService: UserrServiceInterface): UserControllerInterface {
 
     @PostMapping("/addUser")
-    override fun login(@RequestBody body: String):ResponseEntity<Userr> {
-        val responseHeaders = HttpHeaders()
-        responseHeaders.set(
-            "Access-Control-Allow-Origin",
-            "*"
-        )
+    override fun login(@RequestBody body: String):Userr {
         var json = Gson()
         var user: User = json.fromJson(body, User::class.java)
-        return ResponseEntity.ok()
-            .headers(responseHeaders)
-            .body(userService.addUser(user.persName, user.lastName, user.username))
+        return userService.addUser(user.persName, user.persLastname, user.persIddocument)
     }
 
     @GetMapping("/getUserByUsername")
