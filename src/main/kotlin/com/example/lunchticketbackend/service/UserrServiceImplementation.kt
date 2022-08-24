@@ -21,7 +21,7 @@ class UserrServiceImplementation(val userRepo: UserrRepo, val studentRepo: Stude
         return lista
     }
 
-    override fun login(persName: String, persLastName: String, username: String): List<Roles> {
+    override fun login(persName: String, persLastName: String, username: String): List<User_type> {
         var userVerification: Userr? = userRepo.findUserByUsername(username)
         if (userVerification == null) {
             var userr = Userr(0, persName, persLastName, username)
