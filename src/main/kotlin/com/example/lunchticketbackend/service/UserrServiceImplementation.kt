@@ -1,6 +1,7 @@
 package com.example.lunchticketbackend.service
 
 import com.example.lunchticketbackend.entity.*
+import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.User
 import com.example.lunchticketbackend.repository.*
 import org.springframework.stereotype.Service
