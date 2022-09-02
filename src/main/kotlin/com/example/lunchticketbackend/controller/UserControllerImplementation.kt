@@ -29,7 +29,7 @@ class UserControllerImplementation(val userService: UserrServiceInterface, val r
     @PostMapping("/getUserByUsername")
     override fun findUserByUsername(@RequestBody body: String): Userr? {
         var json = Gson()
-        var document: String = json.fromJson(body, Document::class.java).document
+        var document: String = json.fromJson(body, Document::class.java).username
         return userService.findUserByUsername(document)
     }
 }
