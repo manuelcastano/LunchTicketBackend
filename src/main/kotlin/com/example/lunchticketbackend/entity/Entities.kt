@@ -86,7 +86,7 @@ class Restaurant(
     @Column(name = "NIT")
     var nit: String = "",
     @Column(name = "PROFILE_PIC_URL")
-    var profile_pic_url: String = "",
+    var pictureUrl: String = "",
 ): Serializable
 
 @Entity
