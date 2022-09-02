@@ -7,5 +7,5 @@ import com.example.lunchticketbackend.model.BooleanResponse
 
 interface UserControllerInterface {
     fun login(body: String): List<User_type>
-    fun findUserByUsername(username: String): Userr?
+    fun findUserByUsername(body: String): Userr?
 }

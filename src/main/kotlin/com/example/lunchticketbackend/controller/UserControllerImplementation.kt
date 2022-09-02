@@ -5,6 +5,7 @@ import com.example.lunchticketbackend.entity.User_type
 import com.example.lunchticketbackend.entity.Userr
 import com.example.lunchticketbackend.model.AddRole
 import com.example.lunchticketbackend.model.BooleanResponse
+import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.model.User
 import com.example.lunchticketbackend.service.RolesServiceInterface
 import com.example.lunchticketbackend.service.UserrServiceInterface
@@ -25,8 +26,10 @@ class UserControllerImplementation(val userService: UserrServiceInterface, val r
         return userService.login(user.persName, user.persLastname, user.persIddocument)
     }
 
-    @GetMapping("/getUserByUsername")
-    override fun findUserByUsername(@RequestParam("username") username: String): Userr? {
-        return userService.findUserByUsername(username)
+    @PostMapping("/getUserByUsername")
+    override fun findUserByUsername(@RequestBody body: String): Userr? {
+        var json = Gson()
+        var document: String = json.fromJson(body, Document::class.java).document
+        return userService.findUserByUsername(document)
     }
 }
