@@ -15,6 +15,9 @@ class Employee_R(
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     var userID: Userr? = null,
+    @ManyToOne
+    @JoinColumn(name = "RESTAURANT_ID")
+    var restaurantID: Restaurant? = null,
 
 ): Serializable
 

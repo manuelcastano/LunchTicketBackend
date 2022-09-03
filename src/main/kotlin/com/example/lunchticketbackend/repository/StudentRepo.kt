@@ -12,4 +12,10 @@ interface StudentRepo : CrudRepository<Student, Long> {
 
     @Query("SELECT e FROM Student e where e.userID.id = :userId")
     fun findStudentByUserId(@Param("userId") userId: Int): Student?
+
+    @Query("SELECT e FROM Student e where e.userID.username = :username")
+    fun findStudentByUsername(@Param("username") username: String): Student?
+
+    @Query("UPDATE Student set active='N' where userID.username = :username")
+    fun deactivateScholarship(@Param("username") username: String)
 }

@@ -43,4 +43,21 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             }
         }
     }
+
+    override fun deactivateScholarship(username: String): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(username)
+        if(studentVerification == null){
+            return BooleanResponse(false)
+        } else{
+            //desactivamos la beca
+            studentRepo.deactivateScholarship(username)
+            //Cogemos las becas activas del estudiante y las desactivamos
+            var activeScholarships : List<Scholarship_registry> =  scholarshipRegistryRepo.getActiveScholarshipsByUsername(username)
+            val dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MMM/yyyy"))
+            for(scholarship in activeScholarships){
+                scholarshipRegistryRepo.deactivateScholarship(scholarship.id!!, dateTime)
+            }
+            return BooleanResponse(true)
+        }
+    }
 }
