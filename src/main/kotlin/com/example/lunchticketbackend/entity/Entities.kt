@@ -18,6 +18,8 @@ class Employee_R(
     @ManyToOne
     @JoinColumn(name = "RESTAURANT_ID")
     var restaurantID: Restaurant? = null,
+    @Column(name = "PASSWORD")
+    var password: String = "",
 
 ): Serializable
 

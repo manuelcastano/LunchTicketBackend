@@ -12,4 +12,7 @@ interface UserrRepo : CrudRepository<Userr, Long> {
 
     @Query("SELECT u FROM Userr u where u.username = :username")
     fun findUserByUsername(@Param("username") username: String): Userr?
+
+    @Query("DELETE FROM Userr where id = :id")
+    fun deleteUserById(@Param("id") id: Int)
 }
