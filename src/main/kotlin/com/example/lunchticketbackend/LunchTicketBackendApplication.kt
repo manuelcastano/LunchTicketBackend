@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @SpringBootApplication
-class LunchTicketBackendApplication
+open class LunchTicketBackendApplication
 
 fun main(args: Array<String>) {
     runApplication<LunchTicketBackendApplication>(*args)
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 
 @EnableWebSecurity
 @Configuration
-internal class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+internal open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
