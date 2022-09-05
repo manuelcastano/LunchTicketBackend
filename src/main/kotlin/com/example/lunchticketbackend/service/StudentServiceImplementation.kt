@@ -5,6 +5,7 @@ import com.example.lunchticketbackend.entity.Scholarship_registry
 import com.example.lunchticketbackend.entity.Student
 import com.example.lunchticketbackend.entity.Userr
 import com.example.lunchticketbackend.model.BooleanResponse
+import com.example.lunchticketbackend.model.EditScholarship
 import com.example.lunchticketbackend.repository.ScholarshipNameRepo
 import com.example.lunchticketbackend.repository.ScholarshipRegistryRepo
 import com.example.lunchticketbackend.repository.StudentRepo
@@ -58,6 +59,19 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                 scholarshipRegistryRepo.deactivateScholarship(scholarship.id!!, dateTime)
             }
             return BooleanResponse(true)
+        }
+    }
+
+    override fun editScholarship(info: EditScholarship): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(info.document)
+        if(studentVerification == null){
+            return BooleanResponse(false)
+        } else{
+            //desactivamos la beca actual
+            deactivateScholarship(info.document)
+            studentRepo.activateScholarship(info.document)
+            //Añadimos la nueva beca
+            return addScholarship(info.document, info.scholarshipName)
         }
     }
 }

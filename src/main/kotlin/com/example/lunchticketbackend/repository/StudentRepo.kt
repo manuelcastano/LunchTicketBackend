@@ -18,4 +18,7 @@ interface StudentRepo : CrudRepository<Student, Long> {
 
     @Query("UPDATE Student set active='N' where userID.username = :username")
     fun deactivateScholarship(@Param("username") username: String)
+
+    @Query("UPDATE Student set active='Y' where userID.username = :username")
+    fun activateScholarship(@Param("username") username: String)
 }
