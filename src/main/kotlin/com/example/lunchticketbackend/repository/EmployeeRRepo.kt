@@ -3,10 +3,12 @@ package com.example.lunchticketbackend.repository
 import com.example.lunchticketbackend.entity.Employee_R
 import com.example.lunchticketbackend.entity.User_type
 import com.example.lunchticketbackend.entity.Userr
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
@@ -17,9 +19,13 @@ interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
     @Query("SELECT e FROM Employee_R e where e.restaurantID.id = :id")
     fun findEmployeeByRestaurantId(@Param("id") id: Int): List<Employee_R>?
 
+    @Modifying
+    @Transactional
     @Query("DELETE FROM Employee_R where id = :id")
     fun deleteEmployeeRById(@Param("id") id: Int)
 
+    @Modifying
+    @Transactional
     @Query("DELETE FROM Employee_R where userID.id = :id")
     fun deleteEmployeeRByUserId(@Param("id") id: Int)
 }
