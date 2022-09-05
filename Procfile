@@ -1,1 +1,1 @@
-web: build/install/LunchTicketBackend/bin/LunchTicketBackend
+web: java -Dserver.port=$PORT -jar target/LunchTicketBackend-0.0.1-SNAPSHOT.jar
