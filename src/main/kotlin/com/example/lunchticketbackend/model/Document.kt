@@ -1,4 +1,4 @@
 package com.example.lunchticketbackend.model
 
-class Document (var username: String) {
+class Document (var id: String) {
 }

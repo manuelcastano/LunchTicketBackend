@@ -1,17 +1,12 @@
 package com.example.lunchticketbackend.controller
 
-import com.example.lunchticketbackend.entity.Roles
 import com.example.lunchticketbackend.entity.User_type
 import com.example.lunchticketbackend.entity.Userr
-import com.example.lunchticketbackend.model.AddRole
-import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.model.User
 import com.example.lunchticketbackend.service.RolesServiceInterface
 import com.example.lunchticketbackend.service.UserrServiceInterface
 import com.google.gson.Gson
-import org.springframework.http.HttpHeaders
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
@@ -29,7 +24,8 @@ class UserControllerImplementation(val userService: UserrServiceInterface, val r
     @PostMapping("/getUserByUsername")
     override fun findUserByUsername(@RequestBody body: String): Userr? {
         var json = Gson()
-        var document: String = json.fromJson(body, Document::class.java).username
+        var document: String = json.fromJson(body, Document::class.java).id
+        println(document)
         return userService.findUserByUsername(document)
     }
 }

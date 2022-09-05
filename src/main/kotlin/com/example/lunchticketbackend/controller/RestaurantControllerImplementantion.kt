@@ -1,6 +1,5 @@
 package com.example.lunchticketbackend.controller
 
-import com.example.lunchticketbackend.entity.Userr
 import com.example.lunchticketbackend.model.*
 import com.example.lunchticketbackend.entity.Restaurant as Restaurante
 import com.example.lunchticketbackend.service.RestaurantServiceInterface
@@ -30,21 +29,21 @@ class RestaurantControllerImplementantion(val restService: RestaurantServiceInte
     @PostMapping("/getRestaurantByNit")
     override fun findRestaurant(@RequestBody body: String): com.example.lunchticketbackend.entity.Restaurant? {
         var json = Gson()
-        var nit: String = json.fromJson(body, Nit::class.java).nit
+        var nit: String = json.fromJson(body, Document::class.java).id
         return restService.findRestaurantByNit(nit)
     }
 
     @PostMapping("/deleteRestaurant")
     override fun deleteRestaurant(@RequestBody body: String): BooleanResponse {
         var json = Gson()
-        var nit: String = json.fromJson(body, Nit::class.java).nit
+        var nit: String = json.fromJson(body, Document::class.java).id
         return restService.deleteRestaurant(nit)
     }
 
     @PostMapping("/deleteRestaurantEmployee")
     override fun deleteRestaurantEmployee(@RequestBody body: String): BooleanResponse {
         var json = Gson()
-        var document: String = json.fromJson(body, Document::class.java).username
+        var document: String = json.fromJson(body, Document::class.java).id
         return restService.deleteRestaurantEmployee(document)
     }
 
