@@ -1,1 +1,1 @@
-web: java -jar build/libs/LunchTicketBackend-1.0.jar
+web: build/install/LunchTicketBackend/bin/LunchTicketBackend
