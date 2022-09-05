@@ -1,1 +1,1 @@
-web: java -jar target/LunchTicketBackend.jar
+web: java -jar target/LunchTicketBackend_jar/LunchTicketBackend.jar
