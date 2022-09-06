@@ -79,4 +79,13 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
             }
         }
     }
+
+    override fun getEmployees(id: String): List<Employee_R>? {
+        var restaurantVerification: Restaurant? = restRepo.findRestaurantByNit(id)
+        if (restaurantVerification == null) {
+            return null
+        } else {
+            return employeeRRepo.findEmployeeByRestaurantId(restaurantVerification.id!!)
+        }
+    }
 }

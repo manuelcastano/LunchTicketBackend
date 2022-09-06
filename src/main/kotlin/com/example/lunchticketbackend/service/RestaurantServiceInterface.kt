@@ -1,5 +1,6 @@
 package com.example.lunchticketbackend.service
 
+import com.example.lunchticketbackend.entity.Employee_R
 import com.example.lunchticketbackend.entity.Restaurant
 import com.example.lunchticketbackend.model.AddEmployeeR
 import com.example.lunchticketbackend.model.BooleanResponse
@@ -12,4 +13,5 @@ interface RestaurantServiceInterface {
     fun deleteRestaurant(nit: String): BooleanResponse
     fun deleteRestaurantEmployee(document: String): BooleanResponse
     fun addRestaurantEmployee(info: AddEmployeeR): BooleanResponse
+    fun getEmployees(id: String): List<Employee_R>?
 }

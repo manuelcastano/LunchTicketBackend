@@ -1,5 +1,6 @@
 package com.example.lunchticketbackend.controller
 
+import com.example.lunchticketbackend.entity.Employee_R
 import com.example.lunchticketbackend.model.*
 import com.example.lunchticketbackend.entity.Restaurant as Restaurante
 import com.example.lunchticketbackend.service.RestaurantServiceInterface
@@ -52,5 +53,12 @@ class RestaurantControllerImplementantion(val restService: RestaurantServiceInte
         var json = Gson()
         var info: AddEmployeeR = json.fromJson(body, AddEmployeeR::class.java)
         return restService.addRestaurantEmployee(info)
+    }
+
+    @PostMapping("/getEmployees")
+    override fun getEmployees(@RequestBody body: String): List<Employee_R>? {
+        var json = Gson()
+        var document: Document = json.fromJson(body, Document::class.java)
+        return restService.getEmployees(document.id)
     }
 }
