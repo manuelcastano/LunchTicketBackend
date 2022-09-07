@@ -48,7 +48,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             return BooleanResponse(false)
         } else{
             //desactivamos la beca
-            studentRepo.deactivateScholarship(username)
+            studentRepo.deactivateScholarship(studentVerification.userID!!.id)
             //Cogemos las becas activas del estudiante y las desactivamos
             var activeScholarships : List<Scholarship_registry> =  scholarshipRegistryRepo.getActiveScholarshipsByUsername(username)
             val dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MMM/yyyy"))
@@ -66,7 +66,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
         } else{
             //desactivamos la beca actual
             deactivateScholarship(info.document)
-            studentRepo.activateScholarship(info.document)
+            studentRepo.activateScholarship(studentVerification.userID!!.id)
             //Añadimos la nueva beca
             return addScholarship(info.document, info.scholarshipName)
         }
