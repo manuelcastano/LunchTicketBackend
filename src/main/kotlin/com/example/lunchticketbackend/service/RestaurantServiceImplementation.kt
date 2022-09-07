@@ -39,7 +39,6 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
         if (restaurantVerification == null) {
             return BooleanResponse(false)
         } else {
-            restRepo.delete(restaurantVerification)
             var employees : List<Employee_R>? = employeeRRepo.findEmployeeByRestaurantId(restaurantVerification.id!!)
             if (employees != null) {
                 for(employee in employees){
@@ -47,6 +46,7 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
                     userRepo.deleteUserById(employee.id!!)
                 }
             }
+            restRepo.delete(restaurantVerification)
             return BooleanResponse(true)
         }
     }
