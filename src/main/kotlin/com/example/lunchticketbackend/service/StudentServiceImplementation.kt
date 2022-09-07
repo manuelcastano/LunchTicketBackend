@@ -1,9 +1,6 @@
 package com.example.lunchticketbackend.service
 
-import com.example.lunchticketbackend.entity.Scholarship_name
-import com.example.lunchticketbackend.entity.Scholarship_registry
-import com.example.lunchticketbackend.entity.Student
-import com.example.lunchticketbackend.entity.Userr
+import com.example.lunchticketbackend.entity.*
 import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.EditScholarship
 import com.example.lunchticketbackend.repository.ScholarshipNameRepo
@@ -73,5 +70,9 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             //Añadimos la nueva beca
             return addScholarship(info.document, info.scholarshipName)
         }
+    }
+
+    override fun findAll(): List<Student> {
+        return studentRepo.findAll() as List<Student>
     }
 }

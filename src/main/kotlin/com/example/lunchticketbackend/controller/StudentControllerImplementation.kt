@@ -1,15 +1,14 @@
 package com.example.lunchticketbackend.controller
 
+import com.example.lunchticketbackend.entity.Restaurant
+import com.example.lunchticketbackend.entity.Student
 import com.example.lunchticketbackend.model.AddScholarship
 import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.model.EditScholarship
 import com.example.lunchticketbackend.service.StudentServiceInterface
 import com.google.gson.Gson
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
@@ -41,5 +40,10 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
         var json = Gson()
         var student: Document = json.fromJson(body, Document::class.java)
         return studentService.deactivateScholarship(student.id)
+    }
+
+    @GetMapping("/students")
+    override fun getAllStudents(): List<Student> {
+        return studentService.findAll()
     }
 }
