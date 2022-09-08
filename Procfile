@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* src.main.kotlin.com.example.lunchticketbackend.LunchTicketBackendApplication
+web: java -jar target/LunchTicketBackend-0.0.1-SNAPSHOT.war
