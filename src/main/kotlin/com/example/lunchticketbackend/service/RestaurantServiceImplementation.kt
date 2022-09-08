@@ -27,7 +27,7 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
             var rest = Restaurant(0, restaurant.name, restaurant.nit, restaurant.pictureUrl)
             restRepo.save(rest)
         }
-        return BooleanResponse(true)
+        return BooleanResponse(true, "Agregado exitosamente")
     }
 
     override fun findRestaurantByNit(nit: String): Restaurant? {
@@ -37,7 +37,7 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
     override fun deleteRestaurant(nit: String): BooleanResponse {
         var restaurantVerification: Restaurant? = restRepo.findRestaurantByNit(nit)
         if (restaurantVerification == null) {
-            return BooleanResponse(false)
+            return BooleanResponse(false, "El restaurante no existe")
         } else {
             var employees : List<Employee_R>? = employeeRRepo.findEmployeeByRestaurantId(restaurantVerification.id!!)
             if (employees != null) {
@@ -47,25 +47,25 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
                 }
             }
             restRepo.delete(restaurantVerification)
-            return BooleanResponse(true)
+            return BooleanResponse(true, "Eliminado exitosamente")
         }
     }
 
     override fun deleteRestaurantEmployee(document: String): BooleanResponse {
         var userVerification: Userr? = userRepo.findUserByUsername(document)
         if (userVerification == null) {
-            return BooleanResponse(false)
+            return BooleanResponse(false, "El usuario no existe")
         } else {
             employeeRRepo.deleteEmployeeRByUserId(userVerification.id)
             userRepo.deleteUserById(userVerification.id)
-            return BooleanResponse(true)
+            return BooleanResponse(true, "Eliminado exitosamente")
         }
     }
 
     override fun addRestaurantEmployee(info: AddEmployeeR): BooleanResponse {
         var restaurantVerification: Restaurant? = restRepo.findRestaurantByNit(info.nit)
         if (restaurantVerification == null) {
-            return BooleanResponse(false)
+            return BooleanResponse(false, "El restaurante no existe")
         } else {
             var userVerification: Userr? = userRepo.findUserByUsername(info.document)
             if (userVerification == null) {
@@ -73,9 +73,9 @@ class RestaurantServiceImplementation(val restRepo: RestaurantRepo, val employee
                 userVerification = userRepo.save(user)
                 var employeeR = Employee_R(0, userVerification, restaurantVerification, info.password)
                 employeeRRepo.save(employeeR)
-                return BooleanResponse(true)
+                return BooleanResponse(true, "Agregado exitosamente")
             } else{
-                return BooleanResponse(false)
+                return BooleanResponse(false, "El usuario ya existe")
             }
         }
     }
