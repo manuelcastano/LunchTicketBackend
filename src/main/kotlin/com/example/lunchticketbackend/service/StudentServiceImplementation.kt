@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Service
-class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo, val scholarshipRegistryRepo: ScholarshipRegistryRepo, val userRepo: UserrRepo, val studentRepo: StudentRepo): StudentServiceInterface{
+class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo, val scholarshipRegistryRepo: ScholarshipRegistryRepo, val userRepo: UserrRepo, val studentRepo: StudentRepo, val userService: UserrServiceInterface, val roleService: RolesServiceInterface): StudentServiceInterface{
 
     override fun addScholarship(document: String, scholarshipName: String): BooleanResponse {
         //Verificamos que la beca exista
@@ -74,5 +74,15 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
 
     override fun findAll(): List<Student> {
         return studentRepo.findAll() as List<Student>
+    }
+
+    override fun addStudent(student: com.example.lunchticketbackend.model.Student): BooleanResponse {
+        userService.login(student.persName, student.persLastName, student.persIddocument)
+        var responseAddRole : BooleanResponse = roleService.addRole(student.persIddocument, 1)
+        if(!responseAddRole.response){
+            return responseAddRole
+        } else{
+            return addScholarship(student.persIddocument, student.scholarshipName)
+        }
     }
 }

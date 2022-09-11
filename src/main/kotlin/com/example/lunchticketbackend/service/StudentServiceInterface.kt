@@ -10,4 +10,5 @@ interface StudentServiceInterface {
     fun deactivateScholarship(username: String): BooleanResponse
     fun editScholarship(info: EditScholarship): BooleanResponse
     fun findAll():List<Student>
+    fun addStudent(student: com.example.lunchticketbackend.model.Student): BooleanResponse
 }

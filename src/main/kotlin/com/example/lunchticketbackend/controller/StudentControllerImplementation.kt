@@ -46,4 +46,12 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
     override fun getAllStudents(): List<Student> {
         return studentService.findAll()
     }
+
+    @PostMapping("/addStudent")
+    override fun addStudent(@RequestBody body: String): BooleanResponse {
+        print(body)
+        var json = Gson()
+        var student: com.example.lunchticketbackend.model.Student = json.fromJson(body, com.example.lunchticketbackend.model.Student::class.java)
+        return studentService.addStudent(student)
+    }
 }
