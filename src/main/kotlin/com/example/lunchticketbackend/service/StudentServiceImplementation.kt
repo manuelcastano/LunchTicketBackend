@@ -85,4 +85,8 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             return addScholarship(student.persIddocument, student.scholarshipName)
         }
     }
+
+    override fun findStudentByUsername(document: String): Student? {
+        return studentRepo.findStudentByUsername(document)
+    }
 }

@@ -11,4 +11,5 @@ interface StudentControllerInterface {
     fun deactivateStudent(body: String): BooleanResponse
     fun getAllStudents(): List<Student>
     fun addStudent(body: String): BooleanResponse
+    fun getStudent(body: String): Student?
 }

@@ -11,4 +11,5 @@ interface StudentServiceInterface {
     fun editScholarship(info: EditScholarship): BooleanResponse
     fun findAll():List<Student>
     fun addStudent(student: com.example.lunchticketbackend.model.Student): BooleanResponse
+    fun findStudentByUsername(document: String): Student?
 }
