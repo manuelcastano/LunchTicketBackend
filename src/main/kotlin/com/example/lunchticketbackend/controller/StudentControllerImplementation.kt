@@ -55,7 +55,7 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
         return studentService.addStudent(student)
     }
 
-    @PostMapping("/addStudent")
+    @PostMapping("/getStudent")
     override fun getStudent(@RequestBody body: String): Student? {
         var json = Gson()
         var document: String = json.fromJson(body, Document::class.java).id
