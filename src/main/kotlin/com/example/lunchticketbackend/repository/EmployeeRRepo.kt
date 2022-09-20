@@ -1,8 +1,6 @@
 package com.example.lunchticketbackend.repository
 
 import com.example.lunchticketbackend.entity.Employee_R
-import com.example.lunchticketbackend.entity.User_type
-import com.example.lunchticketbackend.entity.Userr
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -28,4 +26,7 @@ interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
     @Transactional
     @Query("DELETE FROM Employee_R where userID.id = :id")
     fun deleteEmployeeRByUserId(@Param("id") id: Int)
+
+    @Query("SELECT e FROM Employee_R e where e.userID.username = :document and e.password = :password")
+    fun loginEmployee(@Param("document") document: String, @Param("password") password: String): Employee_R?
 }

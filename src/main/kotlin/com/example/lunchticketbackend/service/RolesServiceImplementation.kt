@@ -41,4 +41,8 @@ class RolesServiceImplementation(val rolesRepo: RolesRepo, val userRepo: UserrRe
 
         }
     }
+
+    override fun getRoles(document: String): List<User_type> {
+        return rolesRepo.findRolesByUserDocument(document)
+    }
 }

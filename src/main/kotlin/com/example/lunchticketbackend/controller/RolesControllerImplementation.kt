@@ -1,6 +1,7 @@
 package com.example.lunchticketbackend.controller
 
 import com.example.lunchticketbackend.entity.Employee_R
+import com.example.lunchticketbackend.entity.User_type
 import com.example.lunchticketbackend.model.AddRole
 import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.Document
@@ -20,5 +21,12 @@ class RolesControllerImplementation(val rolesService: RolesServiceInterface): Ro
         var json = Gson()
         var toAdd: AddRole = json.fromJson(body, AddRole::class.java)
         return rolesService.addRole(toAdd.document, toAdd.userTypeId)
+    }
+
+    @PostMapping("/getRoles")
+    override fun getRoles(@RequestBody body: String): List<User_type> {
+        var json = Gson()
+        var user: Document = json.fromJson(body, Document::class.java)
+        return rolesService.getRoles(user.id)
     }
 }

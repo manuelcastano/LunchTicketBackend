@@ -36,6 +36,8 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                         .format(DateTimeFormatter.ofPattern("dd/MMM/yyyy"))
                     var scholarshipRegistry = Scholarship_registry(0, dateTime, "", "Y", scholarshipNameVerification, studentVerification)
                     scholarshipRegistryRepo.save(scholarshipRegistry)
+                    //Activamos al estudiante
+                    studentRepo.activateScholarship(userVerification.id)
                     return BooleanResponse(true, "Beca añadida correctamente")
                 }
             }
