@@ -26,9 +26,6 @@ class RolesServiceImplementation(val rolesRepo: RolesRepo, val userRepo: UserrRe
                 if(userTypeVerification.role.equals("STUDENT")){
                     var student = Student(0, "", "Y", userVerification)
                     studentRepo.save(student)
-                } else if(userTypeVerification.role.equals("EMPLOYEE_R")){
-                    var employeeR = Employee_R(0, userVerification)
-                    employeeRRepo.save(employeeR)
                 } else if(userTypeVerification.role.equals("MEMBER_AF")){
                     var memberAf = Member_AF(0, "N", userVerification)
                     memberAFRepo.save(memberAf)
