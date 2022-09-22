@@ -20,6 +20,8 @@ class Employee_R(
     var restaurantID: Restaurant? = null,
     @Column(name = "PASSWORD")
     var password: String = "",
+    @Column(name = "ACTIVE")
+    var active: String = "",
 
 ): Serializable
 
@@ -92,6 +94,8 @@ class Restaurant(
     var nit: String = "",
     @Column(name = "PROFILE_PIC_URL")
     var pictureUrl: String = "",
+    @Column(name = "ACTIVE")
+    var active: String = "",
 ): Serializable
 
 @Entity

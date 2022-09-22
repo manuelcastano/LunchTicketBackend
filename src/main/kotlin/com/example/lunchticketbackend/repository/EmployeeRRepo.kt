@@ -17,6 +17,9 @@ interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
     @Query("SELECT e FROM Employee_R e where e.restaurantID.id = :id")
     fun findEmployeeByRestaurantId(@Param("id") id: Int): List<Employee_R>?
 
+    @Query("SELECT e FROM Employee_R e where e.userID.username = :document")
+    fun findEmployee(@Param("document") document: String ): Employee_R?
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Employee_R where id = :id")
@@ -29,4 +32,14 @@ interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
 
     @Query("SELECT e FROM Employee_R e where e.userID.username = :document and e.password = :password")
     fun loginEmployee(@Param("document") document: String, @Param("password") password: String): Employee_R?
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Employee_R SET active='N' where restaurantID.nit = :nit")
+    fun deactivateEmployeeByNit(@Param("nit") nit: String)
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Employee_R SET active='N' where userID.username = :document")
+    fun deactivateEmployee(@Param("document") document: String)
 }

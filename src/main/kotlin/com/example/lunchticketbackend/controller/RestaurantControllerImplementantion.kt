@@ -61,4 +61,11 @@ class RestaurantControllerImplementantion(val restService: RestaurantServiceInte
         var document: Document = json.fromJson(body, Document::class.java)
         return restService.getEmployees(document.id)
     }
+
+    @PostMapping("/deactivateRestaurant")
+    override fun deactivateRestaurant(@RequestBody body: String): BooleanResponse {
+        var json = Gson()
+        var nit: String = json.fromJson(body, Document::class.java).id
+        return restService.deactivateRestaurant(nit)
+    }
 }
