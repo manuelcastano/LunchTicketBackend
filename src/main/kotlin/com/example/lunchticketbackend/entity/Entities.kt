@@ -143,8 +143,10 @@ class Student(
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
     var id: Int? = null,
-    @Column(name = "PROFILE_PIC_URL")
-    var profile_pic_url: String = "",
+    @Column(name = "PROFILE_PIC")
+    var profilePic: String = "",
+    @Column(name = "DATE_PIC")
+    var datePic: String = "",
     @Column(name = "ACTIVE")
     var active: String = "",
     @ManyToOne

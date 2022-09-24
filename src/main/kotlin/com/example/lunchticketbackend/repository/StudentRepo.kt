@@ -27,4 +27,14 @@ interface StudentRepo : CrudRepository<Student, Long> {
     @Transactional
     @Query("UPDATE Student set active='Y' where userID.id = :id")
     fun activateScholarship(@Param("id") id: Int)
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Student set profilePic = :pictureId where id = :id")
+    fun pictureId(@Param("id") id: Int, @Param("pictureId") pictureId: String)
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Student set datePic = :datePic where id = :id")
+    fun datePic(@Param("id") id: Int, @Param("datePic") datePic: String)
 }

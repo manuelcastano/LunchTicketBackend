@@ -1,6 +1,5 @@
 package com.example.lunchticketbackend.controller
 
-import com.example.lunchticketbackend.entity.Restaurant
 import com.example.lunchticketbackend.entity.Student
 import com.example.lunchticketbackend.model.AddScholarship
 import com.example.lunchticketbackend.model.BooleanResponse
@@ -8,7 +7,17 @@ import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.model.EditScholarship
 import com.example.lunchticketbackend.service.StudentServiceInterface
 import com.google.gson.Gson
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
+
 
 @RestController
 @CrossOrigin
@@ -49,7 +58,6 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
 
     @PostMapping("/addStudent")
     override fun addStudent(@RequestBody body: String): BooleanResponse {
-        print(body)
         var json = Gson()
         var student: com.example.lunchticketbackend.model.Student = json.fromJson(body, com.example.lunchticketbackend.model.Student::class.java)
         return studentService.addStudent(student)
@@ -59,7 +67,19 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
     override fun getStudent(@RequestBody body: String): Student? {
         var json = Gson()
         var document: String = json.fromJson(body, Document::class.java).id
-        println(document)
         return studentService.findStudentByUsername(document)
+    }
+
+    @PostMapping("/student/uploadPicture")
+    override fun uploadPicture(@RequestParam document: String, @RequestParam("image") image: MultipartFile): BooleanResponse {
+        return studentService.uploadPicture(document, image)
+    }
+
+    @PostMapping(value = ["/student/getImage"], produces = [MediaType.IMAGE_JPEG_VALUE])
+    @Throws(IOException::class)
+    override fun getImage(@RequestBody body: String): ResponseEntity<Resource?>? {
+        var json = Gson()
+        var document: String = json.fromJson(body, Document::class.java).id
+        return studentService.getImage(document)
     }
 }

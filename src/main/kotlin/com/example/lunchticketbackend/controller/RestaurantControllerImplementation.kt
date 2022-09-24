@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @CrossOrigin
-class RestaurantControllerImplementantion(val restService: RestaurantServiceInterface): RestaurantControllerInterface {
+class RestaurantControllerImplementation(val restService: RestaurantServiceInterface): RestaurantControllerInterface {
 
     @GetMapping("/restaurants")
     override fun getRestaurants(): List<Restaurante> {

@@ -7,7 +7,15 @@ import com.example.lunchticketbackend.repository.ScholarshipNameRepo
 import com.example.lunchticketbackend.repository.ScholarshipRegistryRepo
 import com.example.lunchticketbackend.repository.StudentRepo
 import com.example.lunchticketbackend.repository.UserrRepo
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import saveFile
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -90,5 +98,43 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
 
     override fun findStudentByUsername(document: String): Student? {
         return studentRepo.findStudentByUsername(document)
+    }
+
+    override fun uploadPicture(document: String, image: MultipartFile): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(document)
+        if(studentVerification == null){
+            return BooleanResponse(false, "El estudiante no existe")
+        } else{
+            var imageId : String = UUID.randomUUID().toString()
+            var directory: String = "students-photos/" + studentVerification!!.userID!!.username
+            saveFile(directory, imageId+".png", image)
+            studentRepo.pictureId(studentVerification.id!!, imageId)
+            studentRepo.datePic(studentVerification.id!!, System.nanoTime().toString())
+            return BooleanResponse(true, "Foto guardada correctamente")
+        }
+    }
+
+    override fun getImage(document: String): ResponseEntity<Resource?>? {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(document)
+        if(studentVerification == null){
+            val inputStream = ByteArrayResource("El estudiante no existe".encodeToByteArray())
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(inputStream.contentLength())
+                .body(inputStream)
+        } else{
+            val photoId: String = studentVerification.profilePic
+            val inputStream = ByteArrayResource(
+                Files.readAllBytes(
+                    Paths.get(
+                        "students-photos/"+document+"/"+photoId+".png"
+                    )
+                )
+            )
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(inputStream.contentLength())
+                .body(inputStream)
+        }
     }
 }
