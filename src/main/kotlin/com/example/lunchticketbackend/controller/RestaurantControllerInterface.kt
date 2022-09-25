@@ -13,4 +13,5 @@ interface RestaurantControllerInterface {
     fun addRestaurantEmployee(body: String): BooleanResponse
     fun getEmployees(body: String): List<Employee_R>?
     fun deactivateRestaurant(body: String): BooleanResponse
+    fun activateRestaurant(body: String): BooleanResponse
 }

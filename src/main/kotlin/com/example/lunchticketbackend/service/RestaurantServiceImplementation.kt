@@ -62,6 +62,16 @@ class RestaurantServiceImplementation(val rolesService: RolesServiceImplementati
         }
     }
 
+    override fun activateRestaurant(nit: String): BooleanResponse {
+        var restaurantVerification: Restaurant? = restRepo.findRestaurantByNit(nit)
+        if (restaurantVerification == null) {
+            return BooleanResponse(false, "El restaurante no existe")
+        } else {
+            restRepo.activateRestaurant(nit)
+            return BooleanResponse(true, "Activado exitosamente")
+        }
+    }
+
     override fun deleteRestaurantEmployee(document: String): BooleanResponse {
         var userVerification: Userr? = userRepo.findUserByUsername(document)
         if (userVerification == null) {
@@ -82,7 +92,7 @@ class RestaurantServiceImplementation(val rolesService: RolesServiceImplementati
             if (userVerification == null) {
                 var user = Userr(0, info.name, info.lastName, info.document)
                 userVerification = userRepo.save(user)
-                var employeeR = Employee_R(0, userVerification, restaurantVerification, info.password)
+                var employeeR = Employee_R(0, userVerification, restaurantVerification, info.password, "Y")
                 employeeRRepo.save(employeeR)
                 rolesService.addRole(userVerification!!.username,  2)
                 return BooleanResponse(true, "Agregado exitosamente")

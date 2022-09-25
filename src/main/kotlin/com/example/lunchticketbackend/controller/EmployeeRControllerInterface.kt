@@ -7,4 +7,5 @@ interface EmployeeRControllerInterface {
 
     fun loginEmployee(body: String): Employee_R?
     fun deactivateEmployeeR(body: String): BooleanResponse
+    fun activateEmployeeR(body: String): BooleanResponse
 }

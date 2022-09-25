@@ -22,4 +22,14 @@ class EmployeeRServiceImplementation(val employeeRRepo: EmployeeRRepo): Employee
             return BooleanResponse(true, "Desactivado exitosamente")
         }
     }
+
+    override fun activateEmployeeR(id: String): BooleanResponse {
+        var employeeVerification: Employee_R? = employeeRRepo.findEmployee(id)
+        if (employeeVerification == null) {
+            return BooleanResponse(false, "El empleado no existe")
+        } else {
+            employeeRRepo.activateEmployee(id)
+            return BooleanResponse(true, "Activado exitosamente")
+        }
+    }
 }

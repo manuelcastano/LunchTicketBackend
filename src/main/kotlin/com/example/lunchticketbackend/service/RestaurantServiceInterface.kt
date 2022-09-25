@@ -15,4 +15,5 @@ interface RestaurantServiceInterface {
     fun addRestaurantEmployee(info: AddEmployeeR): BooleanResponse
     fun getEmployees(id: String): List<Employee_R>?
     fun deactivateRestaurant(nit: String): BooleanResponse
+    fun activateRestaurant(nit: String): BooleanResponse
 }

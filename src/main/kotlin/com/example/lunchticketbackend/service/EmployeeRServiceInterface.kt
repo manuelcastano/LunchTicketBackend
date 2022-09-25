@@ -7,4 +7,5 @@ interface EmployeeRServiceInterface {
 
     fun loginEmployee(document: String, password: String): Employee_R?
     fun deactivateEmployeeR(id: String): BooleanResponse
+    fun activateEmployeeR(id: String): BooleanResponse
 }

@@ -20,4 +20,9 @@ interface RestaurantRepo : CrudRepository<Restaurant, Long> {
     @Transactional
     @Query("UPDATE Restaurant SET active='N' where nit = :nit")
     fun deactivateRestaurant(@Param("nit") nit: String)
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Restaurant SET active='Y' where nit = :nit")
+    fun activateRestaurant(@Param("nit") nit: String)
 }

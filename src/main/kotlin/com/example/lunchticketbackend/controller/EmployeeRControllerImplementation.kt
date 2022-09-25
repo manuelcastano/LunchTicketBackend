@@ -27,4 +27,11 @@ class EmployeeRControllerImplementation(val employeeRService: EmployeeRServiceIn
         var id: String = json.fromJson(body, Document::class.java).id
         return employeeRService.deactivateEmployeeR(id)
     }
+
+    @PostMapping("/activateEmployeeR")
+    override fun activateEmployeeR(@RequestBody body: String): BooleanResponse {
+        var json = Gson()
+        var id: String = json.fromJson(body, Document::class.java).id
+        return employeeRService.activateEmployeeR(id)
+    }
 }
