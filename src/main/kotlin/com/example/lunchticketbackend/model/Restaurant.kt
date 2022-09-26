@@ -1,4 +1,4 @@
 package com.example.lunchticketbackend.model
 
-class Restaurant(var name: String, var nit: String, var pictureUrl: String) {
+class Restaurant(var name: String, var nit: String) {
 }

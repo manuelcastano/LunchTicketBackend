@@ -92,8 +92,6 @@ class Restaurant(
     var name: String = "",
     @Column(name = "NIT")
     var nit: String = "",
-    @Column(name = "PROFILE_PIC_URL")
-    var pictureUrl: String = "",
     @Column(name = "ACTIVE")
     var active: String = "",
 ): Serializable
@@ -106,7 +104,7 @@ class Scholarship_name(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "NAME")
     var name: String = "",
 ): Serializable

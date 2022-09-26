@@ -24,7 +24,7 @@ class RestaurantServiceImplementation(val rolesService: RolesServiceImplementati
     override fun addRestaurant(restaurant: com.example.lunchticketbackend.model.Restaurant): BooleanResponse {
         var restaurantVerification: Restaurant? = restRepo.findRestaurantByNit(restaurant.nit)
         if (restaurantVerification == null) {
-            var rest = Restaurant(0, restaurant.name, restaurant.nit, restaurant.pictureUrl, "Y")
+            var rest = Restaurant(0, restaurant.name, restaurant.nit, "Y")
             restRepo.save(rest)
         }
         return BooleanResponse(true, "Agregado exitosamente")

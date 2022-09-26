@@ -25,7 +25,6 @@ class UserControllerImplementation(val userService: UserrServiceInterface, val r
     override fun findUserByUsername(@RequestBody body: String): Userr? {
         var json = Gson()
         var document: String = json.fromJson(body, Document::class.java).id
-        println(document)
         return userService.findUserByUsername(document)
     }
 }
