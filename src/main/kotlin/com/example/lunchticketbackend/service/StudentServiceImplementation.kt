@@ -106,7 +106,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             return BooleanResponse(false, "El estudiante no existe")
         } else{
             var imageId : String = UUID.randomUUID().toString()
-            var directory: String = "students-photos/" + studentVerification!!.userID!!.username
+            var directory: String = "photos/" + studentVerification!!.userID!!.username
             saveFile(directory, imageId+".png", image)
             studentRepo.pictureId(studentVerification.id!!, imageId)
             studentRepo.datePic(studentVerification.id!!, System.nanoTime().toString())
