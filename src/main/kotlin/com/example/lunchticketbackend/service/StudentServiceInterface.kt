@@ -17,4 +17,5 @@ interface StudentServiceInterface {
     fun findStudentByUsername(document: String): Student?
     fun uploadPicture(document: String, image: MultipartFile): BooleanResponse
     fun getImage(document: String): ResponseEntity<Resource?>?
+    fun hasImageUpdated(document: String): BooleanResponse
 }
