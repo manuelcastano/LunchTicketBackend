@@ -5,8 +5,13 @@ import com.example.lunchticketbackend.service.LunchServiceImplementation
 import com.example.lunchticketbackend.service.StudentServiceInterface
 import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.security.spec.KeySpec
 import java.util.*
@@ -41,8 +46,8 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val student
         }
     }
 
-    @PostMapping("/qrcode")
-    fun readQR(@RequestParam("qr") qr: String, @RequestParam("nit") nit: String, @RequestParam("accepted") accepted: String): BooleanResponse {
+    @PostMapping("/qrcodeResponse")
+    fun qrcodeResponse(@RequestParam("qr") qr: String, @RequestParam("nit") nit: String, @RequestParam("accepted") accepted: String): BooleanResponse {
         try {
             val decrypted = decryptAES(qr)
             val gson = Gson()
@@ -53,6 +58,25 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val student
             return BooleanResponse(true, "Almuerzo entregado con exito")
         } catch (e: Exception) {
             return BooleanResponse(false, "Almuerzo rechazado")
+        }
+    }
+
+    @GetMapping(value = ["/qrInformation"], produces = [MediaType.IMAGE_JPEG_VALUE])
+    fun qrInformation(@RequestParam("qr") qr: String): ResponseEntity<Resource?>? {
+        try {
+            val decrypted = decryptAES(qr)
+            val gson = Gson()
+            val wrapper = gson.fromJson(decrypted, QRCodeWrapper::class.java)
+            val studentCode = wrapper.studentCode
+            val timestamp = wrapper.timestamp
+            //lunchService.create(studentCode, nit, timestamp)
+            return studentService.getImage(studentCode)
+        } catch (e: Exception) {
+            var response = ByteArrayResource("Por favor intentalo más tarde".toByteArray())
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(response.contentLength())
+                .body(response)
         }
     }
 

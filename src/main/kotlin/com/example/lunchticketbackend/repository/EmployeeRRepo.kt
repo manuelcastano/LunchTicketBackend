@@ -40,7 +40,7 @@ interface EmployeeRRepo : CrudRepository<Employee_R, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Employee_R SET active='N' where userID.username = :document")
+    @Query("UPDATE Employee_R e SET e.active='N' where e.userID.username = :document")
     fun deactivateEmployee(@Param("document") document: String)
 
     @Modifying

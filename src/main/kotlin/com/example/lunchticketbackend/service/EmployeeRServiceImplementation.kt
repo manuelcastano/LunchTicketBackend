@@ -13,6 +13,10 @@ class EmployeeRServiceImplementation(val employeeRRepo: EmployeeRRepo): Employee
         return employeeRRepo.loginEmployee(document, password)
     }
 
+    override fun getEmployee(id: String): Employee_R? {
+        return employeeRRepo.findEmployee(id)
+    }
+
     override fun deactivateEmployeeR(id: String): BooleanResponse {
         var employeeVerification: Employee_R? = employeeRRepo.findEmployee(id)
         if (employeeVerification == null) {
