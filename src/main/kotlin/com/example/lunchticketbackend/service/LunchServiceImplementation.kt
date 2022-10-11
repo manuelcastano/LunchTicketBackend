@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class LunchServiceImplementation(val lunchRepo: LunchRepo,
-                                 val restaurantRepo: RestaurantRepo
-):LunchServiceInterface {
+class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: RestaurantRepo):LunchServiceInterface {
 
     @Value("\${lunchticket.waittimeseconds}")
     private val waitTimeSeconds: Long = 1
@@ -67,5 +65,18 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo,
         lunchRepo.save(lunch)
 
          */
+    }
+
+    override fun inTime(): Boolean {
+        val correctTime = Date()
+        val lowerLimit = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"))
+        lowerLimit.set(Calendar.HOUR_OF_DAY,0)
+        lowerLimit.set(Calendar.MINUTE, 0)
+        lowerLimit.set(Calendar.SECOND, 0)
+        val upperLimit = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"))
+        upperLimit.set(Calendar.HOUR_OF_DAY,24)
+        upperLimit.set(Calendar.MINUTE, 0)
+        upperLimit.set(Calendar.SECOND, 0)
+        return correctTime.after(lowerLimit.time) && correctTime.before(upperLimit.time)
     }
 }

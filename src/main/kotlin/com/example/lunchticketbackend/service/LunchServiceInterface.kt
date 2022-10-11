@@ -8,4 +8,5 @@ interface LunchServiceInterface {
     fun findLunchById(lunchId:Long):Lunch
     fun create(persCode : String, restNIT: String, timestamp: Long)
     fun saveLunch(persCode: String, restNIT: String)
+    fun inTime(): Boolean
 }

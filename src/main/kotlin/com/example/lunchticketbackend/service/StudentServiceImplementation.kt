@@ -106,7 +106,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             return BooleanResponse(false, "El estudiante no existe")
         } else{
             var imageId : String = UUID.randomUUID().toString()
-            var directory: String = "students-photos/" + studentVerification!!.userID!!.username
+            var directory: String = "photos/" + studentVerification!!.userID!!.username
             saveFile(directory, imageId+".png", image)
             studentRepo.pictureId(studentVerification.id!!, imageId)
             studentRepo.datePic(studentVerification.id!!, System.nanoTime().toString())
@@ -127,7 +127,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             val inputStream = ByteArrayResource(
                 Files.readAllBytes(
                     Paths.get(
-                        "students-photos/"+document+"/"+photoId+".png"
+                        "photos/"+document+"/"+photoId+".png"
                     )
                 )
             )
@@ -135,6 +135,24 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                 .status(HttpStatus.OK)
                 .contentLength(inputStream.contentLength())
                 .body(inputStream)
+        }
+    }
+
+    override fun hasImageUpdated(document: String): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(document)
+        if(studentVerification == null){
+            return BooleanResponse(false, "El estudiante no existe")
+        } else{
+            val today = Date()
+            val lowerLimit = Calendar.getInstance()
+            lowerLimit.add(Calendar.MONTH, -6)
+            if(studentVerification.profilePic == null){
+                return BooleanResponse(false, "El estudiante no tiene foto")
+            } else if(!today.after(lowerLimit.time)){
+                return BooleanResponse(false, "El estudiante no ha actualizado su foto de perfil")
+            } else{
+                return BooleanResponse(true, "El estudiante tiene la foto de perfil al día")
+            }
         }
     }
 }

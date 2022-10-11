@@ -7,11 +7,12 @@ import com.example.lunchticketbackend.model.AddEmployeeR
 import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.repository.EmployeeRRepo
 import com.example.lunchticketbackend.repository.RestaurantRepo
+import com.example.lunchticketbackend.repository.RolesRepo
 import com.example.lunchticketbackend.repository.UserrRepo
 import org.springframework.stereotype.Service
 
 @Service
-class RestaurantServiceImplementation(val rolesService: RolesServiceImplementation, val restRepo: RestaurantRepo, val employeeRRepo: EmployeeRRepo, val userRepo: UserrRepo):RestaurantServiceInterface{
+class RestaurantServiceImplementation(val rolesRepo: RolesRepo, val rolesService: RolesServiceImplementation, val restRepo: RestaurantRepo, val employeeRRepo: EmployeeRRepo, val userRepo: UserrRepo):RestaurantServiceInterface{
 
     override fun findAll(): List<Restaurant> {
         return restRepo.findAll() as List<Restaurant>
@@ -78,6 +79,7 @@ class RestaurantServiceImplementation(val rolesService: RolesServiceImplementati
             return BooleanResponse(false, "El usuario no existe")
         } else {
             employeeRRepo.deleteEmployeeRByUserId(userVerification.id)
+            rolesRepo.deleteRolesById(userVerification.id)
             userRepo.deleteUserById(userVerification.id)
             return BooleanResponse(true, "Eliminado exitosamente")
         }
