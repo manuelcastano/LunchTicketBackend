@@ -1,6 +1,8 @@
 package com.example.lunchticketbackend.controller
 
 import com.example.lunchticketbackend.model.BooleanResponse
+import com.example.lunchticketbackend.model.Document
+import com.example.lunchticketbackend.model.Lunch
 import com.example.lunchticketbackend.service.LunchServiceImplementation
 import com.example.lunchticketbackend.service.StudentServiceInterface
 import com.google.gson.Gson
@@ -35,10 +37,15 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val student
 
     @GetMapping("/qrcode")
     fun getQRForUser(@RequestParam("document") document: String): BooleanResponse {
-        if(!lunchService.inTime()){
+        var inTime = lunchService.inTime()
+        var hasImageUpdated = studentService.hasImageUpdated(document)
+        var hasAlreadyLunch = lunchService.hasAlreadyLunch(document)
+        if(!inTime){
             return BooleanResponse(false, "No estas dentro del tiempo establecido para obtener tu almuerzo")
-        } else if(!studentService.hasImageUpdated(document).response){
-            return studentService.hasImageUpdated(document)
+        } else if(!hasImageUpdated.response){
+            return hasImageUpdated
+        } else if(hasAlreadyLunch.response){
+            return BooleanResponse(false, "Ya obtuviste tu almuerzo el día de hoy")
         } else{
             val wrapper = QRCodeWrapper(document, System.currentTimeMillis() / (1000 * waitTimeSeconds))
             val gson = Gson()
@@ -46,21 +53,7 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val student
         }
     }
 
-    @PostMapping("/qrcodeResponse")
-    fun qrcodeResponse(@RequestParam("qr") qr: String, @RequestParam("nit") nit: String, @RequestParam("accepted") accepted: String): BooleanResponse {
-        try {
-            val decrypted = decryptAES(qr)
-            val gson = Gson()
-            val wrapper = gson.fromJson(decrypted, QRCodeWrapper::class.java)
-            val studentCode = wrapper.studentCode
-            val timestamp = wrapper.timestamp
-            lunchService.create(studentCode, nit, timestamp)
-            return BooleanResponse(true, "Almuerzo entregado con exito")
-        } catch (e: Exception) {
-            return BooleanResponse(false, "Almuerzo rechazado")
-        }
-    }
-
+    //Retorna la imagen del estudiante que pide el almuerzo
     @GetMapping(value = ["/qrInformation"], produces = [MediaType.IMAGE_JPEG_VALUE])
     fun qrInformation(@RequestParam("qr") qr: String): ResponseEntity<Resource?>? {
         try {
@@ -80,17 +73,14 @@ class QRCodeController(val lunchService: LunchServiceImplementation, val student
         }
     }
 
-    /*
-    @PostMapping("/qrcodeSave")
-    fun saveLunch(@RequestParam("studentCode") studentCode: String, @RequestParam("rest") restaurant: String) {
-        try {
-            lunchService.saveLunch(studentCode, restaurant)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
-        }
+
+    @PostMapping("/lunchSave")
+    fun saveLunch(@RequestBody body: String): BooleanResponse {
+        var json = Gson()
+        var lunch: Lunch = json.fromJson(body, Lunch::class.java)
+        return lunchService.saveLunch(lunch.studentCode, lunch.nit, lunch.accepted)
     }
-    */
+
 
     private fun encryptAES(text: String): String {
         val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
