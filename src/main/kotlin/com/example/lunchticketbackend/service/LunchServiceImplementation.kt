@@ -1,12 +1,15 @@
 package com.example.lunchticketbackend.service
 
+import HTTPSWebUtil
 import com.example.lunchticketbackend.entity.Lunch
 import com.example.lunchticketbackend.entity.Restaurant
 import com.example.lunchticketbackend.entity.Student
 import com.example.lunchticketbackend.model.BooleanResponse
+import com.example.lunchticketbackend.model.FCM
 import com.example.lunchticketbackend.repository.LunchRepo
 import com.example.lunchticketbackend.repository.RestaurantRepo
 import com.example.lunchticketbackend.repository.StudentRepo
+import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpStatus
@@ -70,7 +73,10 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: R
                 return BooleanResponse(false, "El restaurante no existe")
             } else{
                 var lunch = Lunch(0, Date().time, accepted, studentVerification, restaurantVerification)
-                lunchRepo.save(lunch)
+                var lunchSaved = lunchRepo.save(lunch)
+                var http = HTTPSWebUtil()
+                var fcm = FCM("/topics/${studentVerification.userID?.username}", lunchSaved)
+                http.POSTtoFCM(Gson().toJson(fcm))
                 return BooleanResponse(true, "Almuerzo guardado con exito")
             }
         }
