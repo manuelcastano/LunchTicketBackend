@@ -24,4 +24,9 @@ interface RolesRepo : CrudRepository<Roles, Long> {
     @Transactional
     @Query("DELETE FROM Roles where userID.id = :id")
     fun deleteRolesById(@Param("id") id: Int)
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Roles where userID.id = :id and userTypeID.id = :role")
+    fun deleteRoleById(@Param("id") id: Int, @Param("role") role: Int)
 }
