@@ -1,14 +1,24 @@
 package com.example.lunchticketbackend.service
 
+import HTTPSWebUtil
 import com.example.lunchticketbackend.entity.Lunch
+import com.example.lunchticketbackend.entity.Restaurant
+import com.example.lunchticketbackend.entity.Student
+import com.example.lunchticketbackend.model.BooleanResponse
+import com.example.lunchticketbackend.model.FCM
 import com.example.lunchticketbackend.repository.LunchRepo
 import com.example.lunchticketbackend.repository.RestaurantRepo
+import com.example.lunchticketbackend.repository.StudentRepo
+import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: RestaurantRepo):LunchServiceInterface {
+class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: RestaurantRepo, val studentRepo: StudentRepo):LunchServiceInterface {
 
     @Value("\${lunchticket.waittimeseconds}")
     private val waitTimeSeconds: Long = 1
@@ -53,18 +63,23 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: R
          */
     }
 
-    override fun saveLunch(persCode : String, restNIT: String) {
-        /*
-        val pers = personRepo.findPersonByDocument(persCode) ?: throw Exception("The user doesn't exist in the database")
-        val res = restaurantRepo.findAllByRestNIT(restNIT) ?: throw Exception("The restaurant doesn't exist")
-        val lunch = Lunch()
-        lunch.lunchPerson = pers
-        lunch.lunchRestaurant = res
-        lunch.lunchDate = Date()
-        val lunches = pers.personLunches
-        lunchRepo.save(lunch)
-
-         */
+    override fun saveLunch(persCode: String, restNIT: String, accepted: String): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(persCode)
+        if(studentVerification == null){
+            return BooleanResponse(false, "El estudiante no existe")
+        } else{
+            var restaurantVerification: Restaurant? = restaurantRepo.findRestaurantByNit(restNIT)
+            if (restaurantVerification == null) {
+                return BooleanResponse(false, "El restaurante no existe")
+            } else{
+                var lunch = Lunch(0, Date().time, accepted, studentVerification, restaurantVerification)
+                var lunchSaved = lunchRepo.save(lunch)
+                var http = HTTPSWebUtil()
+                var fcm = FCM("/topics/${studentVerification.userID?.username}", lunchSaved)
+                http.POSTtoFCM(Gson().toJson(fcm))
+                return BooleanResponse(true, "Almuerzo guardado con exito")
+            }
+        }
     }
 
     override fun inTime(): Boolean {
@@ -78,5 +93,27 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: R
         upperLimit.set(Calendar.MINUTE, 0)
         upperLimit.set(Calendar.SECOND, 0)
         return correctTime.after(lowerLimit.time) && correctTime.before(upperLimit.time)
+    }
+
+    override fun hasAlreadyLunch(document: String): BooleanResponse {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(document)
+        if(studentVerification == null){
+            return BooleanResponse(false, "El estudiante no existe")
+        } else{
+            var lunchsAccepted = lunchRepo.lunchsAcceptedByDocument(studentVerification.id!!)
+            var already = false
+            val expCal = Calendar.getInstance()
+            expCal.add(Calendar.HOUR, -6)
+            for(lunch: Lunch in lunchsAccepted){
+                if(Date(lunch.dateLunch).after(expCal.time)){
+                    already = true
+                    break
+                }
+            }
+            if(already){
+                return BooleanResponse(true, "Ya se reclamó el almuerzo del día de hoy")
+            }
+            return BooleanResponse(false, "El estudiante aún no ha almorzado")
+        }
     }
 }

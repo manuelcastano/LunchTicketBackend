@@ -23,4 +23,11 @@ class ScholarshipNameControllerImplementation(val scholarshipNameService: Schola
         var name: String = json.fromJson(body, NewScholarship::class.java).name
         return scholarshipNameService.addNewScholarship(name)
     }
+
+    @PostMapping("/deleteScholarship")
+    override fun deleteScholarship(@RequestBody body: String): BooleanResponse {
+        var json = Gson()
+        var name: String = json.fromJson(body, NewScholarship::class.java).name
+        return scholarshipNameService.deleteScholarship(name)
+    }
 }

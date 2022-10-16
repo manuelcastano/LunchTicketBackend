@@ -2,13 +2,30 @@ package com.example.lunchticketbackend.service
 
 import com.example.lunchticketbackend.entity.Member_AF
 import com.example.lunchticketbackend.entity.Restaurant
+import com.example.lunchticketbackend.entity.Student
+import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.repository.MemberAFRepo
+import com.example.lunchticketbackend.repository.UserrRepo
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class MemberAfServiceImplementation(val memberAFRepo: MemberAFRepo): MemberAfServiceInterface {
+class MemberAfServiceImplementation(val memberAFRepo: MemberAFRepo, val userrRepo: UserrRepo): MemberAfServiceInterface {
 
     override fun findAll(): List<Member_AF> {
         return memberAFRepo.findAll() as List<Member_AF>
+    }
+
+    override fun deleteMemberAf(document: String): BooleanResponse {
+        var memberAfVerification: Member_AF? = memberAFRepo.findMemberAF(document)
+        if(memberAfVerification == null){
+            return BooleanResponse(false, "La persona no existe en la base de datos")
+        } else{
+            memberAFRepo.deleteMemberAfById(memberAfVerification.id)
+            userrRepo.deleteUserById(memberAfVerification.userID!!.id)
+            return BooleanResponse(true, "eliminación exitosa")
+        }
     }
 }

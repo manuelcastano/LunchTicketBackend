@@ -7,4 +7,5 @@ interface ScholarshipNameServiceInterface {
 
     fun getAllScholarships(): List<Scholarship_name>
     fun addNewScholarship(name: String): BooleanResponse
+    fun deleteScholarship(name: String): BooleanResponse
 }

@@ -11,7 +11,7 @@ class Employee_R(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     var userID: Userr? = null,
@@ -33,9 +33,9 @@ class Lunch(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "DATE_LUNCH")
-    var dateLunch: String = "",
+    var dateLunch: Long = 0,
     @Column(name = "ACCEPTED")
     var accepted: String = "",
     @ManyToOne
@@ -54,7 +54,7 @@ class Member_AF(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "IS_SUPER_ADMIN")
     var is_super_admin: String = "",
     @ManyToOne
@@ -87,7 +87,7 @@ class Restaurant(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "NAME")
     var name: String = "",
     @Column(name = "NIT")
@@ -117,7 +117,7 @@ class Scholarship_registry(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "START_DATE")
     var start_date: String = "",
     @Column(name = "END_DATE")
@@ -140,7 +140,7 @@ class Student(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "PROFILE_PIC")
     var profilePic: String = "",
     @Column(name = "DATE_PIC")
@@ -160,7 +160,7 @@ class User_type(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @Column(name = "ROLE")
     var role: String = "",
 ): Serializable
@@ -190,7 +190,7 @@ class Roles(
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    var id: Int? = null,
+    var id: Int = 0,
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     var userID: Userr? = null,

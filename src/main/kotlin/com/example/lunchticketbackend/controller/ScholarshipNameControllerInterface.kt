@@ -7,4 +7,5 @@ interface ScholarshipNameControllerInterface {
 
     fun getAllScholarships(): List<Scholarship_name>
     fun addNewScholarship(body: String): BooleanResponse
+    fun deleteScholarship(body: String): BooleanResponse
 }
