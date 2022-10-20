@@ -82,4 +82,11 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
         var document: String = json.fromJson(body, Document::class.java).id
         return studentService.getImage(document)
     }
+
+    @PostMapping("/hasImageUpdated")
+    override fun hasImageUpdated(@RequestBody body: String): BooleanResponse {
+        var json = Gson()
+        var document: String = json.fromJson(body, Document::class.java).id
+        return studentService.hasImageUpdated(document)
+    }
 }

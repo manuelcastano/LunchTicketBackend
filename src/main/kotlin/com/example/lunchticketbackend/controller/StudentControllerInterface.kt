@@ -17,4 +17,5 @@ interface StudentControllerInterface {
     fun getStudent(body: String): Student?
     fun uploadPicture(body: String, image: MultipartFile): BooleanResponse
     fun getImage(body: String): ResponseEntity<Resource?>?
+    fun hasImageUpdated(body: String): BooleanResponse
 }

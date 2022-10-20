@@ -118,18 +118,23 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
     override fun getImage(document: String): ResponseEntity<Resource?>? {
         var studentVerification: Student? = studentRepo.findStudentByUsername(document)
         if(studentVerification == null){
-            val inputStream = ByteArrayResource("El estudiante no existe".encodeToByteArray())
+            var response = BooleanResponse(false, "El estudiante no existe")
+            var json = Gson().toJson(response)
+            val inputStream = ByteArrayResource(json.encodeToByteArray())
             return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentLength(inputStream.contentLength())
                 .body(inputStream)
         } else{
             val photoId: String = studentVerification.profilePic
-            if(photoId == null){
+            if(photoId.equals("(null)")){
                 var response = BooleanResponse(false, "El estudiante no tiene foto")
+                var json = Gson().toJson(response)
+                val inputStream = ByteArrayResource(json.encodeToByteArray())
                 return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(ByteArrayResource(Gson().toJson(response).toByteArray(Charsets.UTF_8)))
+                    .contentLength(0)
+                    .body(inputStream)
             } else{
                 val inputStream = ByteArrayResource(
                     Files.readAllBytes(
