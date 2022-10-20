@@ -7,6 +7,7 @@ import com.example.lunchticketbackend.repository.ScholarshipNameRepo
 import com.example.lunchticketbackend.repository.ScholarshipRegistryRepo
 import com.example.lunchticketbackend.repository.StudentRepo
 import com.example.lunchticketbackend.repository.UserrRepo
+import com.google.gson.Gson
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpStatus
@@ -124,17 +125,25 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                 .body(inputStream)
         } else{
             val photoId: String = studentVerification.profilePic
-            val inputStream = ByteArrayResource(
-                Files.readAllBytes(
-                    Paths.get(
-                        "photos/"+document+"/"+photoId+".png"
+            if(photoId == null){
+                var response = BooleanResponse(false, "El estudiante no tiene foto")
+                return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(ByteArrayResource(Gson().toJson(response).toByteArray(Charsets.UTF_8)))
+            } else{
+                val inputStream = ByteArrayResource(
+                    Files.readAllBytes(
+                        Paths.get(
+                            "photos/"+document+"/"+photoId+".png"
+                        )
                     )
                 )
-            )
-            return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentLength(inputStream.contentLength())
-                .body(inputStream)
+                return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentLength(inputStream.contentLength())
+                    .body(inputStream)
+            }
+
         }
     }
 
