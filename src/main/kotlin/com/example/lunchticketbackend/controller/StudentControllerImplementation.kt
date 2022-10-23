@@ -77,10 +77,8 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
 
     @PostMapping(value = ["/student/getImage"], produces = [MediaType.IMAGE_JPEG_VALUE])
     @Throws(IOException::class)
-    override fun getImage(@RequestBody body: String): ResponseEntity<Resource?>? {
-        var json = Gson()
-        var document: String = json.fromJson(body, Document::class.java).id
-        return studentService.getImage(document)
+    override fun getImage(@RequestParam("id") id: String): ResponseEntity<Resource?>? {
+        return studentService.getImage(id)
     }
 
     @PostMapping("/hasImageUpdated")
