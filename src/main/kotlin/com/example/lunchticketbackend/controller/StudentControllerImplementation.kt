@@ -75,7 +75,7 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
         return studentService.uploadPicture(document, image)
     }
 
-    @PostMapping(value = ["/student/getImage"], produces = [MediaType.IMAGE_JPEG_VALUE])
+    @GetMapping(value = ["/student/getImage"], produces = [MediaType.IMAGE_JPEG_VALUE])
     @Throws(IOException::class)
     override fun getImage(@RequestParam("id") id: String): ResponseEntity<Resource?>? {
         return studentService.getImage(id)
