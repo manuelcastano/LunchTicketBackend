@@ -13,4 +13,7 @@ interface LunchRepo : CrudRepository<Lunch, Long> {
 
     @Query("SELECT l FROM Lunch l where l.studentID.id = :id and l.accepted='Y'")
     fun lunchsAcceptedByDocument(@Param("id") id: Int): List<Lunch>
+
+    @Query("SELECT l FROM Lunch l where l.studentID.id = :id")
+    fun lunchsByDocument(@Param("id") id: Int): List<Lunch>
 }

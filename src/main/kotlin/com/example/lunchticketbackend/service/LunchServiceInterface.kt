@@ -11,4 +11,5 @@ interface LunchServiceInterface {
     fun saveLunch(persCode: String, restNIT: String, accepted: String): BooleanResponse
     fun inTime(): Boolean
     fun hasAlreadyLunch(document: String): BooleanResponse
+    fun lastLunchInTheDay(document: String): Lunch?
 }

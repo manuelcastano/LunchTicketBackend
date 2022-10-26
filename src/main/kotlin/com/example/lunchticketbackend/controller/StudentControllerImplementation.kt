@@ -1,10 +1,12 @@
 package com.example.lunchticketbackend.controller
 
+import com.example.lunchticketbackend.entity.Lunch
 import com.example.lunchticketbackend.entity.Student
 import com.example.lunchticketbackend.model.AddScholarship
 import com.example.lunchticketbackend.model.BooleanResponse
 import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.model.EditScholarship
+import com.example.lunchticketbackend.service.LunchServiceInterface
 import com.example.lunchticketbackend.service.StudentServiceInterface
 import com.google.gson.Gson
 import org.springframework.core.io.ByteArrayResource
@@ -21,7 +23,7 @@ import java.nio.file.Paths
 
 @RestController
 @CrossOrigin
-class StudentControllerImplementation(val studentService: StudentServiceInterface): StudentControllerInterface{
+class StudentControllerImplementation(val studentService: StudentServiceInterface, val lunchService: LunchServiceInterface): StudentControllerInterface{
 
     @PostMapping("/addScholarship")
     override fun addScholarship(@RequestBody body: String): BooleanResponse{
@@ -86,5 +88,12 @@ class StudentControllerImplementation(val studentService: StudentServiceInterfac
         var json = Gson()
         var document: String = json.fromJson(body, Document::class.java).id
         return studentService.hasImageUpdated(document)
+    }
+
+    @PostMapping("/lastLunch")
+    override fun lastLunch(@RequestBody body: String): Lunch? {
+        var json = Gson()
+        var document: String = json.fromJson(body, Document::class.java).id
+        return lunchService.lastLunchInTheDay(document)
     }
 }

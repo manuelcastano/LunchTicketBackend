@@ -116,4 +116,27 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: R
             return BooleanResponse(false, "El estudiante aún no ha almorzado")
         }
     }
+
+    override fun lastLunchInTheDay(document: String): Lunch? {
+        var studentVerification: Student? = studentRepo.findStudentByUsername(document)
+        if(studentVerification == null){
+            return null
+        } else{
+            var lunchs = lunchRepo.lunchsByDocument(studentVerification.id!!)
+            var lastLunch: Lunch? = null
+            var lastTime: Long = 0
+            for(lunch: Lunch in lunchs){
+                if(lunch.dateLunch > lastTime){
+                    lastLunch = lunch
+                    lastTime = lunch.dateLunch
+                }
+            }
+            val expCal = Calendar.getInstance()
+            if(Date(lastTime).before(expCal.time)){
+                return null
+            } else{
+                return lastLunch
+            }
+        }
+    }
 }
