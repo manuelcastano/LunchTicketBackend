@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import saveFile
+import java.io.FileNotFoundException
 import java.nio.file.Files
+import java.nio.file.NoSuchFileException
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -136,17 +138,28 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                     .contentLength(0)
                     .body(inputStream)
             } else{
-                val inputStream = ByteArrayResource(
-                    Files.readAllBytes(
-                        Paths.get(
-                            "photos/"+document+"/"+photoId+".png"
+                var inputStream: ByteArrayResource? = null
+                try{
+                    inputStream = ByteArrayResource(
+                        Files.readAllBytes(
+                            Paths.get(
+                                "photos/"+document+"/"+photoId+".png"
+                            )
                         )
                     )
-                )
-                return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentLength(inputStream.contentLength())
-                    .body(inputStream)
+                    return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .contentLength(0)
+                        .body(inputStream)
+                } catch(exception: FileNotFoundException){
+                    var response = BooleanResponse(false, "La foto no existe en el sistema, por favor contacta al administrador")
+                    var json = Gson().toJson(response)
+                    inputStream = ByteArrayResource(json.encodeToByteArray())
+                    return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .contentLength(0)
+                        .body(inputStream)
+                }
             }
 
         }
@@ -160,12 +173,26 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             val today = Date()
             val lowerLimit = Calendar.getInstance()
             lowerLimit.add(Calendar.MONTH, -6)
-            if(studentVerification.profilePic == null){
+            if(studentVerification.profilePic.equals("(null)")){
                 return BooleanResponse(false, "El estudiante no tiene foto")
             } else if(!today.after(lowerLimit.time)){
                 return BooleanResponse(false, "El estudiante no ha actualizado su foto de perfil")
             } else{
-                return BooleanResponse(true, "El estudiante tiene la foto de perfil al día")
+                try{
+                    var inputStream = ByteArrayResource(
+                        Files.readAllBytes(
+                            Paths.get(
+                                "photos/"+document+"/"+studentVerification.profilePic+".png"
+                            )
+                        )
+                    )
+                    return BooleanResponse(true, "El estudiante tiene la foto de perfil al día")
+                } catch(exception: FileNotFoundException){
+                    return BooleanResponse(false, "El estudiante no tiene foto")
+                } catch(exception: NoSuchFileException){
+                    return BooleanResponse(false, "El estudiante no tiene foto")
+                }
+
             }
         }
     }
