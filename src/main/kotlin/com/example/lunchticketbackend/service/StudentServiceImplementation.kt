@@ -173,7 +173,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
             val today = Date()
             val lowerLimit = Calendar.getInstance()
             lowerLimit.add(Calendar.MONTH, -6)
-            if(studentVerification.profilePic.equals("(null)")){
+            if(studentVerification.profilePic == null){
                 return BooleanResponse(false, "El estudiante no tiene foto")
             } else if(!today.after(lowerLimit.time)){
                 return BooleanResponse(false, "El estudiante no ha actualizado su foto de perfil")
