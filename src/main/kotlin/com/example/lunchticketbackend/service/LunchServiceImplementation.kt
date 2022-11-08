@@ -132,6 +132,7 @@ class LunchServiceImplementation(val lunchRepo: LunchRepo, val restaurantRepo: R
                 }
             }
             val expCal = Calendar.getInstance()
+            expCal.add(Calendar.HOUR, -6)
             if(Date(lastTime).before(expCal.time)){
                 return null
             } else{

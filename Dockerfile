@@ -6,6 +6,7 @@ EXPOSE 8081
 ENV TZ=GMT
 
 WORKDIR /app
+VOLUME /tmp
 
 ARG JAR_FILE=target/LunchTicketBackend.jar
 

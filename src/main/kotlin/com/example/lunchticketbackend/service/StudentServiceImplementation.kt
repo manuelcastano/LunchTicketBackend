@@ -135,7 +135,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                 val inputStream = ByteArrayResource(json.encodeToByteArray())
                 return ResponseEntity
                     .status(HttpStatus.OK)
-                    .contentLength(0)
+                    .contentLength(inputStream.contentLength())
                     .body(inputStream)
             } else{
                 var inputStream: ByteArrayResource? = null
@@ -149,7 +149,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                     )
                     return ResponseEntity
                         .status(HttpStatus.OK)
-                        .contentLength(0)
+                        .contentLength(inputStream.contentLength())
                         .body(inputStream)
                 } catch(exception: FileNotFoundException){
                     var response = BooleanResponse(false, "La foto no existe en el sistema, por favor contacta al administrador")
@@ -157,7 +157,7 @@ class StudentServiceImplementation(val scholarshipNameRepo: ScholarshipNameRepo,
                     inputStream = ByteArrayResource(json.encodeToByteArray())
                     return ResponseEntity
                         .status(HttpStatus.OK)
-                        .contentLength(0)
+                        .contentLength(inputStream.contentLength())
                         .body(inputStream)
                 }
             }
