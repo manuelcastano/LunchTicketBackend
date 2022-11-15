@@ -16,4 +16,7 @@ interface LunchRepo : CrudRepository<Lunch, Long> {
 
     @Query("SELECT l FROM Lunch l where l.studentID.id = :id")
     fun lunchsByDocument(@Param("id") id: Int): List<Lunch>
+
+    @Query("SELECT l FROM Lunch l where l.dateLunch > :startDate and l.dateLunch < :finalDate")
+    fun lunchsByDates(@Param("startDate") startDate: Long, @Param("finalDate") finalDate: Long): List<Lunch>
 }
