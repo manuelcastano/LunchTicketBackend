@@ -7,6 +7,9 @@ import com.example.lunchticketbackend.model.Dates
 import com.example.lunchticketbackend.model.Document
 import com.example.lunchticketbackend.service.MemberAfServiceInterface
 import com.google.gson.Gson
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -32,4 +35,20 @@ class MemberAfControllerImplementation(val memberAfService: MemberAfServiceInter
         return memberAfService.getReportArray(dates.startDate, dates.finalDate)
     }
 
+    @PostMapping("/getReportExcel")
+    override fun getReportExcel(@RequestBody body: String): ResponseEntity<ByteArray> {
+        var json = Gson()
+        var dates: Dates = json.fromJson(body, Dates::class.java)
+        val report =  memberAfService.getReportExcel(dates.startDate, dates.finalDate)
+        return createResponseEntity(report, "report.xlsx")
+    }
+
+    private fun createResponseEntity(
+        report: ByteArray,
+        fileName: String
+    ): ResponseEntity<ByteArray> =
+        ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"$fileName\"")
+            .body(report)
 }

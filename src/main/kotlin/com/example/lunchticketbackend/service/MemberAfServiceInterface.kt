@@ -9,4 +9,5 @@ interface MemberAfServiceInterface {
     fun findAll(): List<Member_AF>
     fun deleteMemberAf(document: String): BooleanResponse
     fun getReportArray(startDate: Long, finalDate: Long): List<Lunch>
+    fun getReportExcel(startDate: Long, finalDate: Long): ByteArray
 }
