@@ -31,4 +31,5 @@ class MemberAfControllerImplementation(val memberAfService: MemberAfServiceInter
         var dates: Dates = json.fromJson(body, Dates::class.java)
         return memberAfService.getReportArray(dates.startDate, dates.finalDate)
     }
+
 }
